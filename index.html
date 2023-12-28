@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Mina:wght@400;700&display=swap" rel="stylesheet">
+    <title>Cálculo de Honorários Médicos</title>
+   <style>
+        * Reseta os estilos padrão para consistência entre navegadores */ * {
+            font-family: 'Mina', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* Define a paleta de cores */
+        
+         :root {
+            --cream: #dbc194;
+            --tan: #bd955c;
+            --maroon: #690000;
+            --dark-maroon: #450000;
+            --faded-pink: #faded2;
+            --black: #000;
+            --transparent-white: rgba(255, 255, 255, 0.6);
+            --transparent-cream: rgba(254, 228, 210, 0.5);
+            --glass-effect-background: rgba(105, 0, 0, 0.8);
+            --gradient-background: linear-gradient( 175deg, rgba(105, 0, 0, 0.7), rgba(252, 220, 208, 0.3), rgba(189, 139, 92, 0.5));
+        }
+        /* Estilos base do documento */
+        
+        body {
+            font-family: 'Mina', sans-serif;
+            background-image: url('https://static.wixstatic.com/media/75d2e8_030e39b1104c4812bc984e214ff1f44d~mv2.jpg'), var(--gradient-background);
+            background-attachment: fixed;
+            /* Efeito Parallax */
+            background-size: cover;
+            color: #faded2;
+            line-height: 1.6;
+            backdrop-filter: blur(0px);
+            transition: background-color 0.8s ease;
+            /* Transição suave para mudanças de cor de fundo */
+        }
+        
+        header {
+            color: #FFFFFF;
+            padding: 10px;
+            text-align: center;
+            backdrop-filter: blur(80px);
+            box-shadow: 0 2px 2px var(--transparent-cream);
+            background: var(--gradient-background);
+            border: 3px groove #dbc194;
+        }
+        
+        main {
+            padding: 20px;
+        }
+        /* Efeito de vidro com transparência e sombra */
+        
+        form {
+            background: var(--glass-effect-background);
+            backdrop-filter: blur(100px);
+            padding: 30px;
+            margin: 30px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px var(--black);
+            transition: transform 0.8s ease;
+            /* Transição suave para transformações */
+        }
+        
+        form div {
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--cream);
+        }
+        
+        form input[type='number'],
+        form input[type='text'],
+        form select,
+        form input[type='range'],
+        form input[type='checkbox'],
+        form button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 2px groove var(--black);
+            background: var(--faded-pink);
+            border-radius: 5px;
+            box-shadow: inset 0 1px 3px var(--dark-maroon);
+        }
+        /* Estilos para responsividade e transição */
+        
+        @media (max-width: 768px) {
+            header,
+            footer,
+            form,
+            section#resultadosCalculo {
+                padding: 10px;
+                box-shadow: none;
+            }
+            form {
+                background: rgba(105, 0, 0, 0.55);
+            }
+            body {
+                transition: background-color 0.5s ease;
+                /* Ajuste na transição para dispositivos móveis */
+            }
+        }
+        /* Estilização dos resultados e rodapé */
+        
+        section#resultadosCalculo,
+        footer {
+            background-color: var(--faded-pink);
+            padding: 30px;
+            border: 2px groove var(--transparent);
+            border-radius: 0px;
+            color: var(--dark-maroon);
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px var(--transparent-white);
+            transition: background-color 0.3s ease;
+            font-family: 'Confortaa', sans-serif;
+        }
+        /* Efeito de iluminação e sombras para sliders e botões */
+        
+        form input[type='range'] {
+            cursor: pointer;
+            background: var( --gradient-background);
+            /* Gradiente tridimensional para o track do slider */
+        }
+        
+        form input[type='range']::-webkit-slider-thumb {
+            background: var(--tan);
+            /* Sombras e iluminação */
+            box-shadow: 0 0 5px var(--cream);
+        }
+        
+        form button {
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+                       border: 3px groove transparent;
+  color: #820000;
+  font-weight: 600;
+  font-size: 16px;
+  display: block;
+  border-radius: 0px;
+  conteot-align: center;
+  box-shadow: 4px 5px 1px #dbc194, -3px -5px 6px #faded2;
+  transition: all 0.8s ease;
+        }
+        
+        form button:hover {
+          background: linear-gradient(145deg, #dbc194, #faded2);
+  box-shadow: 1px 4px 10px #fff;
+  nackdrop-filter: blur(40px);
+  text-shadow: 0.5px 0.5px 0px #bd955c;
+  color: #fff;
+}
+        /* Estilos gerais para os controles deslizantes */
+        
+        .slider-container {
+            margin-bottom: 20px;
+        }
+        
+        .slider-container input[type='range'] {
+            -webkit-appearance: none;
+            width: 100%;
+            margin: 10px;
+        }
+        /* Estilos para a trilha do controle deslizante */
+        
+        .slider-container input[type='range']::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right, #faded2, #dbc194);
+            border-radius: 4px;
+            border: none;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .slider-container input[type='range']::-moz-range-track {
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right, #faded2, #dbc194);
+            border-radius: 4px;
+            border: none;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .slider-container input[type='range']::-ms-track {
+            width: 100%;
+            height: 8px;
+            background: transparent;
+            border-color: transparent;
+            color: transparent;
+        }
+        
+        .slider-container input[type='range']::-ms-fill-lower {
+            background: #faded2;
+        }
+        
+        .slider-container input[type='range']::-ms-fill-upper {
+            background: #dbc194;
+        }
+        /* Estilos para o polegar do controle deslizante */
+        
+        .slider-container input[type='range']::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #820000;
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            transition: background 0.3s ease-in-out;
+        }
+        
+        .slider-container input[type='range']::-moz-range-thumb {
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #820000;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+        
+        .slider-container input[type='range']::-ms-thumb {
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #820000;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+        /* Aumentar a área clicável do polegar do controle deslizante */
+        
+        .slider-container input[type='range']::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 36px;
+            width: 36px;
+            margin-top: -14px;
+        }
+        /* Estilização do foco para remover o contorno padrão e adicionar um efeito personalizado */
+        
+        .slider-container input[type='range']:focus {
+            outline: none;
+        }
+        
+        .slider-container input[type='range']:focus::-webkit-slider-runnable-track {
+            background: linear-gradient(to right, #faded2, #dbc194);
+        }
+        
+        .slider-container input[type='range']:focus::-moz-range-track {
+            background: linear-gradient(to right, #faded2, #dbc194);
+        }
+        
+        .slider-container input[type='range']:focus::-ms-fill-lower {
+            background: #faded2;
+        }
+        
+        .slider-container input[type='range']:focus::-ms-fill-upper {
+            background: #dbc194;
+        }
+        /* Atualiza o valor do slider dinamicamente com JavaScript */
+        
+        .slider-container input[type='range'] {
+            oninput: 'taxaConversaoValor.innerHTML=this.value + "%"';
+        }
+        
+        .slider-container input[type='range'] {
+            oninput: 'taxaComparecimentoValor.innerHTML=this.value + "%"';
+        }
+        
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 2;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #690000 0%, #bd955c 100%);
+            margin: 15%;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 2px solid #faded2;
+            width: 40%;
+            /* Could be more or less, depending on screen size */
+            border-radius: 10px;
+            /* Optional: for rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+            /* Text color */
+        }
+        
+        .close {
+            color: #ccc;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Estilos para os inputs e botões do modal */
+        
+        .modal input[type=number],
+        .modal button {
+            width: 100%;
+            padding: 10px;
+            margin: 15px;
+            /* Espaçamento entre os campos */
+            border: none;
+            border-radius: 5px;
+            /* Bordas arredondadas */
+        }
+        
+        .modal button {
+            background-color: #820000;
+            /* Cor de fundo dos botões */
+            color: white;
+            cursor: pointer;
+            /* Muda o cursor para indicar que é clicável */
+            transition: background-color 0.3s;
+            /* Transição suave para hover */
+        }
+        
+        .modal button:hover {
+            background-color: #bd955c;
+            /* Cor de fundo do botão no hover */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Indicadores Globais para Variáveis de Desempenho</h1>
+    </header>
+    <main>
+        <form id="formCalculoHonorarios">
+            <div>
+                <label for="nivelMedico">Nível do Médico: <a href="#" id="calcularNivelMedicoLink">Calcular Nível</a></label>
+                <select id="nivelMedico" required>
+                  <option value="">Selecione...</option>
+                  <option value="1">Nível 1</option>
+                  <option value="2">Nível 2</option>
+                  <option value="3">Nível 3</option>
+                  <option value="4">Nível 4</option>
+                </select>
+            </div>
+            <div>
+                <label for="numeroCasosConquistados">Número de Tratamentos Executados:</label>
+                <input type="number" id="numeroCasosConquistados" min="0" required/>
+            </div>
+            <div>
+                <label for="horasDisponibilizadas">Horas Disponibilizadas (hh:mm):</label>
+                <input type="text" id="horasDisponibilizadas" pattern="\d{1,3}:[0-5]\d" required placeholder="HH:MM" value="00:00" />
+            </div>
+            <div>
+                <label for="horasEspeciais">Horas Especiais (hh:mm):</label>
+                <input type="text" id="horasEspeciais" pattern="\d{1,3}:[0-5]\d" placeholder="HH:MM" value="00:00" />
+            </div>
+            <div>
+                <label for="horasEducacionais">Horas Educacionais (hh:mm):</label>
+                <input type="text" id="horasEducacionais" pattern="\d{1,3}:[0-5]\d" placeholder="HH:MM" value="00:00" />
+            </div>
+            <div class="slider-container">
+                <label for="sliderTaxaConversao">Taxa de Conversão (%):</label>
+                <input type="range" id="sliderTaxaConversao" min="0" max="100" value="60" step="0.25" />
+                <span id="taxaConversaoValor">60%</span>
+            </div>
+            <div class="slider-container">
+                <label for="sliderTaxaComparecimento">Taxa de Comparecimento (%):</label>
+                <input type="range" id="sliderTaxaComparecimento" min="0" max="100" value="60" step="0.25" />
+                <span id="taxaComparecimentoValor">60%</span>
+            </div>
+            <div>
+                <label>Gestão:</label>
+                <div>
+                    <input type="checkbox" id="responsavelLocal" name="responsavelLocal" />
+                    <label for="responsavelLocal">Referência Local</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="responsavelRegional" name="responsavelRegional" />
+                    <label for="responsavelRegional">Supervisão Regional</label>
+                </div>
+            </div>
+            <div>
+                <button type="submit">Calcular</button>
+            </div>
+        </form>
+
+        <div id="modalCalculadora" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Calculadora de Nível Médico</h2>
+                <div>
+                    <label for="tempoAtuacao">Tempo de Atuação em RA (anos):</label>
+                    <input type="number" id="tempoAtuacao" step="0.1" required>
+                </div>
+                <div>
+                    <label for="tempoAdmissao">Tempo de Admissão na Engravida (anos):</label>
+                    <input type="number" id="tempoAdmissao" step="0.1" required>
+                </div>
+                <div>
+                    <label for="titulos">Quantidade de Títulos (Mestrado/Doutorado):</label>
+                    <input type="number" id="titulos" min="0" required>
+                </div>
+                <div>
+                    <button type="button" id="calcularNivel">Calcular Nível</button>
+                </div>
+            </div>
+        </div>
+
+        <section id="resultadosCalculo">
+            <h2>Resultados</h2>
+            <div id="graficoResultados">
+                <canvas id="myChart"></canvas>
+            </div>
+            <p id="salarioTotal">Salário Total: R$0,00</p>
+            <p id="valorPorHora">Valor por Hora: R$0,00</p>
+            <p id="valorPorCaso">Valor por Tratamento: R$0,00</p>
+            <p id="btAtual">BT Atual: 0</p>
+            <p id="btIdeal">BT Ideal: 0</p>
+            <p id="sugestao">Sugestão: Nenhuma</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 - Engravida - Clínica de Reprodução Humana</p>
+    </footer>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var modal = document.getElementById('modalCalculadora');
+    var btn = document.getElementById('calcularNivelMedicoLink');
+    var span = document.getElementsByClassName('close')[0];
+    var calcularNivelBtn = document.getElementById('calcularNivel');
+    var nivelMedicoSelect = document.getElementById('nivelMedico');
+
+    // Função para calcular o nível médico
+    function calcularNivelMedico() {
+        var tempoAtuacao = parseFloat(document.getElementById('tempoAtuacao').value) || 0;
+        var tempoAdmissao = parseFloat(document.getElementById('tempoAdmissao').value) || 0;
+        var titulos = parseInt(document.getElementById('titulos').value, 10) || 0;
+        var pontuacao = tempoAtuacao + tempoAdmissao * 0.4 + titulos * 0.2;
+
+        return pontuacao > 10 ? '4' :
+               pontuacao > 7 ? '3' :
+               pontuacao > 4 ? '2' : '1';
+    }
+
+    // Evento para abrir o modal
+    btn.addEventListener('click', function(event) {
+        event.preventDefault();
+        modal.style.display = 'block';
+    });
+
+    // Evento para fechar o modal pelo botão 'x'
+    span.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    // Evento para fechar o modal clicando fora dele
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // Evento para calcular o nível, atualizar o dropdown e fechar o modal
+    calcularNivelBtn.addEventListener('click', function() {
+        var nivel = calcularNivelMedico();
+        nivelMedicoSelect.value = nivel;
+        modal.style.display = 'none';
+    });
+});
+    Chart.register(
+        Chart.BarController,
+        Chart.LinearScale,
+        Chart.CategoryScale,
+        Chart.BarElement,
+        Chart.Title,
+        Chart.Tooltip,
+        Chart.Legend
+    );
+
+    function converterTempoParaHoras(tempo) {
+        const padrao = /^\d{1,3}:\d{2}$/;
+        if (!padrao.test(tempo)) {
+            throw new Error(
+                'Formato de tempo inválido. O tempo deve estar no formato HH:MM ou HHH:MM.'
+            );
+        }
+        const [horas, minutos] = tempo.split(':').map(Number);
+        return horas + minutos / 60;
+    }
+
+    function atualizarValorSlider(idDoSlider, idDoValor) {
+        const slider = document.getElementById(idDoSlider);
+        const output = document.getElementById(idDoValor);
+        slider.oninput = function() {
+            output.textContent = this.value + '%';
+        };
+        output.textContent = slider.value + '%';
+    }
+
+    function inicializarSliders() {
+        atualizarValorSlider('sliderTaxaConversao', 'taxaConversaoValor');
+        atualizarValorSlider('sliderTaxaComparecimento', 'taxaComparecimentoValor');
+    }
+
+    document.addEventListener('DOMContentLoaded', inicializarSliders);
+
+    function obterDadosFormulario() {
+        return {
+            nivelMedico: parseInt(document.getElementById('nivelMedico').value, 10),
+            horasDisponibilizadas: converterTempoParaHoras(document.getElementById('horasDisponibilizadas').value),
+            horasEspeciais: converterTempoParaHoras(document.getElementById('horasEspeciais').value),
+            horasEducacionais: converterTempoParaHoras(document.getElementById('horasEducacionais').value),
+            taxaConversao: parseFloat(document.getElementById('sliderTaxaConversao').value) / 100,
+            taxaComparecimento: parseFloat(document.getElementById('sliderTaxaComparecimento').value) / 100,
+            numeroTratamentos: parseInt(document.getElementById('numeroCasosConquistados').value, 10),
+            responsavelLocal: document.getElementById('responsavelLocal').checked,
+            responsavelRegional: document.getElementById('responsavelRegional').checked,
+        };
+    }
+
+    function calcularBTAtual(dados) {
+        const btIdeal = 0.2 * 0.6 * 0.6;
+        const casosPorHora = dados.numeroTratamentos / dados.horasDisponibilizadas;
+        const btAtual = dados.taxaConversao * dados.taxaComparecimento * casosPorHora;
+
+        let sugestao = '';
+        if (btAtual < btIdeal) {
+            if (dados.taxaConversao < 0.6) {
+                sugestao += 'Implementação de um Programa de Desenvolvimento Profissional: Pode-se criar um programa focado em habilidades interpessoais como a empatia e a comunicação eficiente, para melhorar a capacidade dos profissionais de engajar os pacientes e aumentar a taxa de conversão de consultas em tratamentos. Avaliar alinhamento com o Protocolo Institucional e a solicitação de exames ou encaminhamento que adiem ou desmotivem o tratamento.';
+            }
+            if (dados.taxaComparecimento < 0.6) {
+               sugestao += 'Iniciativa de Engajamento do Paciente: Pode-se desenvolver um sistema de acompanhamento personalizado que incentive o comparecimento, como lembretes de consultas e follow-ups pós-consulta para reforçar o compromisso dos pacientes com o tratamento e o acolhimento em todas as etapas. Avaliar fatores socioeconômicos externos e distância dos agendamentos por superlotação das agendas.';
+            }
+            if (casosPorHora < 0.2) {
+               sugestao += 'Reestruturação da Agenda Clínica: A agenda pode ser reestruturada para melhorar a eficiência operacional, reduzindo o tempo de espera entre as consultas e otimizando a utilização dos recursos disponíveis, como mais horários disponíveis para consultas de primeira avaliação ou mais médicos atuando em dias com maior taxa de comparecimento.';
+            }
+        } else {
+            sugestao = 'O BT atual está adequado ou acima do ideal. ';
+            if (dados.taxaConversao > 0.6) {
+               sugestao += 'Auditorias de Qualidade e Satisfação do Paciente: a realização de auditorias pode ajudar a manter a qualidade do atendimento, garantindo que a alta taxa de conversão não comprometa a qualidade dos serviços prestados, nem represente a indicação de intervenções desnecessárias.'
+            }
+            if (casosPorHora > 0.2) {
+               sugestao += 'Revisar o fluxo de trabalho para manter a qualidade dos tratamentos sem sobrecarregar a equipe.'';
+            }
+        }
+
+        return {
+            btAtual: btAtual,
+            btIdeal: btIdeal,
+            sugestao: sugestao
+        };
+    }
+
+    // Função para calcular os honorários com base nos dados fornecidos e no BT atual
+    function calcularHonorarios(dados, dadosBT) {
+        const valoresHoraPlantao = [120, 140, 170, 200];
+        const valoresHoraProdutividade = [60, 70, 85, 100];
+        const bonusPorTratamento = 300;
+        const salarioBaseLocalRegional = 2500;
+
+        const nivelIndex = dados.nivelMedico - 1;
+        const valorHoraPlantao = valoresHoraPlantao[nivelIndex];
+        const valorHoraProdutividade = valoresHoraProdutividade[nivelIndex];
+        const salarioHoraPlantao = valorHoraPlantao * dados.horasDisponibilizadas;
+        const salarioHoraProdutividade = valorHoraProdutividade * dados.horasEspeciais;
+        const bonusTratamento = bonusPorTratamento * dados.numeroTratamentos;
+        const salarioEducacional = valorHoraProdutividade * dados.horasEducacionais;
+
+        let salarioTotal = salarioHoraPlantao + salarioHoraProdutividade + bonusTratamento + salarioEducacional;
+
+        if (dados.responsavelLocal) salarioTotal += salarioBaseLocalRegional;
+        if (dados.responsavelRegional) salarioTotal += salarioBaseLocalRegional;
+
+        return {
+            salarioTotal: salarioTotal,
+            salarioPorHora: salarioTotal / (dados.horasDisponibilizadas + dados.horasEspeciais + dados.horasEducacionais),
+            salarioPorTratamento: salarioTotal / dados.numeroTratamentos,
+            BTAtual: dadosBT.btAtual,
+            BTIdeal: dadosBT.btIdeal,
+            sugestao: dadosBT.sugestao
+        };
+    }
+
+    // Função para atualizar a interface com os resultados do cálculo
+    function atualizarInterface(resultados) {
+        document.getElementById('salarioTotal').textContent = `Salário Total: R$${resultados.salarioTotal.toFixed(2)}`;
+        document.getElementById('valorPorHora').textContent = `Valor por Hora: R$${resultados.salarioPorHora.toFixed(2)}`;
+        document.getElementById('valorPorCaso').textContent = `Valor por Tratamento: R$${resultados.salarioPorTratamento.toFixed(2)}`;
+        document.getElementById('btAtual').textContent = `BT Atual: ${resultados.BTAtual.toFixed(4)}`;
+        document.getElementById('btIdeal').textContent = `BT Ideal: ${resultados.BTIdeal.toFixed(4)}`;
+        document.getElementById('sugestao').textContent = resultados.sugestao;
+    }
+
+    // Função para criar ou atualizar o gráfico com os resultados do cálculo
+    function atualizarGrafico(resultados) {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        // Destrua o gráfico existente se ele já existir
+        if (window.graficoResultados instanceof Chart) {
+            window.graficoResultados.destroy();
+        }
+        window.graficoResultados = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Salário Total', 'Por Hora', 'Por Tratamento'],
+                datasets: [{
+                    label: 'Valor (R$)',
+                    data: [resultados.salarioTotal, resultados.salarioPorHora, resultados.salarioPorTratamento],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    }
+                }
+            }
+        });
+    }
+function calcularHonorarios(dados) {
+    const valoresHoraDisponibilizada = [120, 140, 160, 180];
+    const valoresHoraAdicionalConsulta = [60, 70, 80, 90];
+    const salarioBaseLocalRegional = 2500;
+    const bonusPorTratamento = 300;
+    const receitaPorTratamento = 12600;
+    const receitaPorConsulta = 250;
+    const minutosConsulta = 30;
+
+    const nivelIndex = dados.nivelMedico - 1;
+    const valorHoraDisponibilizada = valoresHoraDisponibilizada[nivelIndex];
+    const valorHoraAdicionalConsulta = valoresHoraAdicionalConsulta[nivelIndex];
+
+    const proporcaoConsultas = 125 / (125 + 165);
+    const horasConsultas = dados.horasDisponibilizadas * proporcaoConsultas;
+    const totalConsultas = horasConsultas * (60 / minutosConsulta);
+    const consultasEfetivas = totalConsultas * dados.taxaComparecimento;
+    const horasOcupadas = consultasEfetivas * (minutosConsulta / 60);
+
+    const salarioDisponibilizadas = valorHoraDisponibilizada * dados.horasDisponibilizadas;
+    const adicionalHorasConsultas = valorHoraAdicionalConsulta * horasOcupadas;
+    const bonusTotalTratamento = bonusPorTratamento * dados.numeroTratamentos;
+
+    let salarioTotal = salarioDisponibilizadas + adicionalHorasConsultas + bonusTotalTratamento;
+
+    if (dados.responsavelLocal) salarioTotal += salarioBaseLocalRegional;
+    if (dados.responsavelRegional) salarioTotal += salarioBaseLocalRegional * 2;
+
+    const faturamentoTratamentos = receitaPorTratamento * dados.numeroTratamentos;
+    const faturamentoConsultas = receitaPorConsulta * consultasEfetivas;
+    const faturamentoTotal = faturamentoTratamentos + faturamentoConsultas;
+
+    const percentualSalarioFaturamento = (salarioTotal / faturamentoTotal) * 100;
+
+    return {
+        salarioTotal,
+        salarioPorHora: salarioTotal / dados.horasDisponibilizadas,
+        salarioPorTratamento: salarioTotal / dados.numeroTratamentos,
+        faturamentoTotal,
+        percentualSalarioFaturamento
+    };
+}
+
+// Função para atualizar textos da interface com os resultados
+function atualizarInterface(resultados) {
+    document.getElementById('salarioTotal').textContent = `Salário Total: R$${resultados.salarioTotal.toFixed(2)}`;
+    document.getElementById('valorPorHora').textContent = `Valor por Hora: R$${resultados.salarioPorHora.toFixed(2)}`;
+    document.getElementById('valorPorCaso').textContent = `Valor por Tratamento: R$${resultados.salarioPorTratamento.toFixed(2)}`;
+}
+
+// Função para atualizar o gráfico com os resultados
+function atualizarGrafico(resultados) {
+    const ctx = document.getElementById('myChart').getContext('2d');
+    if (window.graficoResultados instanceof Chart) {
+        window.graficoResultados.destroy();
+    }
+    window.graficoResultados = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Salário Total', 'Por Hora', 'Por Tratamento'],
+            datasets: [{
+                label: 'Valor (R$)',
+                data: [resultados.salarioTotal, resultados.salarioPorHora, resultados.salarioPorTratamento],
+                backgroundColor: [
+                    'rgba(105, 0, 0, 0.3)',
+                    'rgba(189, 132, 98, 0.3)',
+                    'rgba(255, 230, 210, 0.3)'
+                ],
+                borderColor: [
+                    'rgba(105, 0, 0, 0.8)',
+                    'rgba(189, 132, 98, 0.8)',
+                    'rgba(255, 230, 210, 0.8)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById("modalCalculadora");
+    const btn = document.getElementById("calcularNivelMedicoLink");
+    const span = document.getElementsByClassName("close")[0];
+    const calcularNivelBtn = document.getElementById("calcularNivel");
+    const nivelMedicoSelect = document.getElementById("nivelMedico");
+    const formCalculoHonorarios = document.getElementById("formCalculoHonorarios");
+
+    // Previne a submissão do formulário
+    formCalculoHonorarios.addEventListener('submit', function(event) {
+        event.preventDefault();
+        // Aqui você pode chamar a função para calcular os honorários
+    });
+
+    // Evento para abrir o modal
+    btn.addEventListener('click', function(event) {
+        event.preventDefault(); // Impede que o link recarregue a página
+        modal.style.display = "block";
+    });
+
+    // Evento para fechar o modal pelo botão 'x'
+    span.addEventListener('click', function() {
+        modal.style.display = "none";
+    });
+
+    // Evento para fechar o modal clicando fora dele
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    // Evento para calcular o nível e atualizar o dropdown
+    calcularNivelBtn.addEventListener('click', function() {
+        const tempoAtuacao = parseFloat(document.getElementById('tempoAtuacao').value) || 0;
+        const tempoAdmissao = parseFloat(document.getElementById('tempoAdmissao').value) || 0;
+        const titulos = parseInt(document.getElementById('titulos').value, 10) || 0;
+        const pontuacao = tempoAtuacao + tempoAdmissao * 0.4 + titulos * 0.2;
+        const nivel = pontuacao > 10 ? '4' : pontuacao > 7 ? '3' : pontuacao > 4 ? '2' : '1';
+
+        nivelMedicoSelect.value = nivel;
+        modal.style.display = "none";
+    });
+});
+</script>
+   </body>
+      </html>
