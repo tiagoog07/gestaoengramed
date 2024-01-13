@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Médicos</title>
+    <!-- Adicione aqui suas referências de CSS -->
+    <style>
+ :root {
+    --primary-dark-red: #820000;
+    --secondary-dark-red: #690000;
+    --accent-light-brown: #DB966C;
+    --accent-beige: #DBC194;
+    --accent-pale-pink: #FADED2;
+    --color-white: rgba(255, 255, 255, 0.75); /* Ajustado para transparência */
+    --color-black: #000000;
+    --font-family: 'Mina', sans-serif;
+    --radius: 5px;
+    --shadow-dark: rgba(150, 0, 0, 0.6);
+    --shadow-light: rgba(189, 139, 98, 0.45);
+    --blur: 65px;
+    --transition-speed: 0.6s; /* Adicionado para transições suaves */
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+  }
+
+  body {
+    background-image: 
+      radial-gradient(circle at 0% 20%, rgba(105, 0, 0, 0.6), #450000 100%),
+      radial-gradient(circle at 90% 50%, #450000, rgba(105, 0, 0, 0.6) 100%);
+    color: var(--color-white);
+    line-height: 1.6;
+    margin: 0;
+    padding: 2%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(28px);
+  }
+
+  ::-webkit-scrollbar {
+    display: none; /* Considere não ocultar as scrollbars para não afetar a acessibilidade */
+  }
+
+  @media (max-height: 600px) {
+    .formulario {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .menu .button {
+      width: 50%;
+      height: 6%;
+    }
+  }
+
+  h2 {
+    margin-bottom: 1rem;
+    padding: 3% 2%;
+    font-family: var(--font-family);
+    border: 4px solid rgba(240,220,205,0.6);
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    text-transform: uppercase;
+    background-image: radial-gradient(
+      circle at 40% 90%, 
+      rgba(105,0,0,0.6), 
+      rgba(255,255,255,0.3) 40%, 
+      var(--primary-dark-red) 100%
+    );
+    filter: drop-shadow(2px 2px 20px var(--primary-dark-red));
+    backdrop-filter: blur(80px);
+    font-weight: 600;
+    font-size: 2rem; /* Tamanho da fonte alterado para unidades relativas */
+    text-shadow: 0 1px 2px var(--primary-dark-red);
+    z-index: 9;
+  }
+
+  .form-section {
+    background: url('https://static.wixstatic.com/media/75d2e8_cfbb03ce61324dcd93f73ee2ae8526f6~mv2.jpg') center/cover, 
+                linear-gradient(175deg, var(--accent-beige), var(--accent-light-brown));
+    border-radius: var(--radius);
+    box-shadow: 0 0 2px rgba(255,255,255,0.2), 0 0 6px rgba(255,255,255,0.5), 0 0 8px white, 0 0 10px rgba(255,255,255,0.3);
+    padding: 20px;
+    margin: 20px;
+    backdrop-filter: blur(var(--blur));
+    transition: backdrop-filter var(--transition-speed);
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--accent-pale-pink);
+    text-weight: 600px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="date"],
+  input[type="search"],
+  input[type="file"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 1rem;
+    margin:2% 1%;
+    padding: 2% 2%;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 2px rgba(255,255,255,0.2), 0 0 4px rgba(255,255,255,0.5), 0 0 4px white, 0 0 7px rgba(255,255,255,0.3), inset 3px 3px 6px var(--shadow-dark), inset -2px -4px 5px var(--shadow-light);
+    border: 2px groove transparent; /* Adjusted for a more glass-like border */
+    border-radius: var(--radius);
+    backdrop-filter: blur(100px);
+    transition: box-shadow var(--transition-speed), transform var(--transition-speed); /* Smooth transitions for interactions */
+  }
+
+  .button-container {
+    display: flex;
+    flex-direction: wrap;
+    background-color: rgba(254,222,210,0.4);
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vh;
+    border: 2px ridge transparent;
+  }
+
+  input[type="submit"],
+  button,
+  .submit-button {
+    background: linear-gradient(145deg, #dbc194, #faded2);
+    border: 6px groove rgba(250,230,210,0.5);
+    color: #820000;
+    font-weight: 700;
+    font-size: 3.5vh;
+    padding: 15px 15px;
+    margin: auto;
+    display: block;
+    width: 400px;
+    height: 65px;
+    border-radius: 0px;
+    text-align: center;
+    box-shadow: 1px 1px 2px #dbc194, -2px -2px 3px #dbc194;
+    transition: all 0.8s ease;
+  }
+
+  input[type="submit"]:hover,
+  button:hover,
+  .submit-button:hover {
+    background-image: radial-gradient(circle at 40% 90%, rgba(255, 255, 255, 0.6), rgba(250, 237, 210, 0.3) 100%);
+    box-shadow: 0 3px 5px #faded2;
+    color: #450000;
+    filter: drop-shadow(2px 2px 4px #FADED2);
+  }
+
+  /* Added styles for improved UX */
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus,
+  input[type="number"]:focus,
+  input[type="date"]:focus,
+  input[type="search"]:focus,
+  input[type="file"]:focus,
+  textarea:focus,
+  select:focus {
+background: linear-gradient(135deg, #faded2, #dbc194);
+ box-shadow: 0 0 2px rgba(105,0,0,0.2), 0 0 4px rgba(105,0,0,0.5), 0 0 4px rgba(105,0,0,0.2), 0 0 7px rgba(255,255,255,0.2), inset 3px 3px 8px var(--shadow-dark), inset -2px -4px 5px var(--shadow-light);
+  }
+    </style>
+</head>
+<!-- Seção de Cadastro de Médicos -->
+<section id="header" class="form-section">
+  <div id="section" style="display: block;">
+    <h2>Gestão do Corpo Clínico</h2>
+    <button onclick="toggleSection('section1')">Cadastro</button>
+    <div id="section1" style="display: block;">
+      <section id="cadastro-medico" class="form-section">
+        <form id="form-cadastro-medico">
+          <input type="text" id="nome" name="nome" placeholder="Nome completo" required>
+          <input type="text" id="identidadeGenero" name="identidadeGenero" placeholder="Identidade de Gênero" required>
+          <input type="date" id="dataNascimento" name="dataNascimento" placeholder="Data de Nascimento" required>
+          <input type="text" id="corRacaEtnia" name="corRacaEtnia" placeholder="Cor/Raça/Etnia" required>
+          <input type="email" id="email" name="email" placeholder="Email" required>
+            <select id="estado" name="estado" required>
+  <option value="">Unidade Federativa</option>
+  <option value="AC">Acre</option>
+  <option value="AL">Alagoas</option>
+  <option value="AP">Amapá</option>
+  <option value="AM">Amazonas</option>
+  <option value="BA">Bahia</option>
+  <option value="CE">Ceará</option>
+  <option value="DF">Distrito Federal</option>
+  <option value="ES">Espírito Santo</option>
+  <option value="GO">Goiás</option>
+  <option value="MA">Maranhão</option>
+  <option value="MT">Mato Grosso</option>
+  <option value="MS">Mato Grosso do Sul</option>
+  <option value="MG">Minas Gerais</option>
+  <option value="PA">Pará</option>
+  <option value="PB">Paraíba</option>
+  <option value="PR">Paraná</option>
+  <option value="PE">Pernambuco</option>
+  <option value="PI">Piauí</option>
+  <option value="RJ">Rio de Janeiro</option>
+  <option value="RN">Rio Grande do Norte</option>
+  <option value="RS">Rio Grande do Sul</option>
+  <option value="RO">Rondônia</option>
+  <option value="RR">Roraima</option>
+  <option value="SC">Santa Catarina</option>
+  <option value="SP">São Paulo</option>
+  <option value="SE">Sergipe</option>
+  <option value="TO">Tocantins</option>
+          </select>
+          <input type="tel" id="telefone" name="telefone" placeholder="Telefone" required>
+          <input type="text" id="graduacao" name="graduacao" placeholder="Graduação - Instituição de Ensino" required>
+          <input type="text" id="residencia" name="residencia" placeholder="Residência Médica - Instituição Credenciada" required>
+          <input type="number" id="anoResidencia" name="anoResidencia" placeholder="Ano de Conclusão" required>
+
+          <!-- Alteração para pergunta de sim/não -->
+          <label for="formacaoRA">Possui formação em Reprodução Assistida?</label>
+          <input type="radio" id="formacaoRASim" name="formacaoRA" value="sim" required> Sim
+          <input type="radio" id="formacaoRANao" name="formacaoRA" value="nao"> Não
+
+          <!-- Conteúdo condicional baseado na seleção de formação em Reprodução Assistida -->
+          <div id="detalhesFormacaoRA" style="display: none;">
+            <select id="modalidadeFormacaoRA" name="modalidadeFormacaoRA" required>
+              <!-- Opções de modalidade de formação -->
+            </select>
+            <fieldset id="titulacoes">
+              <legend>Titulações</legend>
+              <label><input type="checkbox" name="titulacoes" value="especialista"> Título de Especialista</label>
+              <label><input type="checkbox" name="titulacoes" value="mestrado"> Mestrado</label>
+              <label><input type="checkbox" name="titulacoes" value="doutorado"> Doutorado</label>
+            </fieldset>
+            <input type="number" id="anoFormacaoRA" name="anoFormacaoRA" placeholder="Ano de início da atuação em RA" required>
+            <label for="membroEngravida">Você já faz parte da Engravida?</label>
+            <input type="radio" id="membroEngravidaSim" name="membroEngravida" value="sim"> Sim
+            <input type="radio" id="membroEngravidaNao" name="membroEngravida" value="nao" checked> Não
+            <div id="detalhesMembroEngravida" style="display: none;">
+              <input type="number" id="tempoEngravida" name="tempoEngravida" placeholder="Há quanto tempo (anos)?" min="0">
+            </div>
+            <textarea id="experienciaProfissional" name="experienciaProfissional" placeholder="Experiência Profissional" required></textarea>
+          </div>
+
+          <!-- Conteúdo condicional para caso não possua formação em Reprodução Assistida -->
+          <div id="envioCurriculo" style="display: none;">
+            <p>Por favor, envie seu currículo para avaliação.</p>
+            <input type="file" id="curriculo" name="curriculo" accept=".pdf,.doc,.docx" required>
+          </div>
+
+          <button type="submit" id="btnCadastrar">Cadastrar</button>
+        </form>
+      </section>
+    </div>
+ 
+  </div>
+</section>
+
+<script>
+  function toggleSection(sectionId) {
+    var section = document.getElementById(sectionId);
+    if (section.style.display === "none") {
+      section.style.display = "block";
+    } else {
+      section.style.display = "none";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    // Lógica para alternar a visibilidade dos detalhes de formação em reprodução assistida
+    document.querySelectorAll('input[name="formacaoRA"]').forEach((radio) => {
+      radio.addEventListener("change", (event) => {
+        const detalhesFormacaoRA = document.getElementById("detalhesFormacaoRA");
+        const envioCurriculo = document.getElementById("envioCurriculo");
+        if (event.target.value === "sim") {
+          detalhesFormacaoRA.style.display = "block";
+          envioCurriculo.style.display = "none";
+        } else {
+          detalhesFormacaoRA.style.display = "none";
+          envioCurriculo.style.display = "block";
+        }
+      });
+    });
+
+    // Lógica para alternar a visibilidade dos detalhes de membro da Engravida
+    document.querySelectorAll('input[name="membroEngravida"]').forEach((radio) => {
+      radio.addEventListener("change", (event) => {
+        const detalhesMembroEngravida = document.getElementById("detalhesMembroEngravida");
+        detalhesMembroEngravida.style.display = event.target.value === "sim" ? "block" : "none";
+      });
+    });
+
+    // Lógica para o envio do formulário de cadastro
+    const formCadastroMedico = document.getElementById("form-cadastro-medico");
+    formCadastroMedico.addEventListener("submit", async function(event) {
+      event.preventDefault();
+     // Lógica para o envio do formulário de cadastro
+const formCadastroMedico = document.getElementById("form-cadastro-medico");
+formCadastroMedico.addEventListener("submit", async function(event) {
+  event.preventDefault();
+  
+  // Coleta dos dados do formulário
+  const formData = new FormData(event.target);
+  const formacaoRA = formData.get("formacaoRA");
+  const membroEngravida = formData.get("membroEngravida");
+
+  // Construção do objeto com os dados do médico
+  const dadosMedico = {
+    nome: formData.get("nome"),
+    identidadeGenero: formData.get("identidadeGenero"),
+    dataNascimento: formData.get("dataNascimento"),
+    corRacaEtnia: formData.get("corRacaEtnia"),
+    email: formData.get("email"),
+    estado: formData.get("estado"),
+    telefone: formData.get("telefone"),
+    graduacao: formData.get("graduacao"),
+    residencia: formData.get("residencia"),
+    anoResidencia: parseInt(formData.get("anoResidencia")),
+    formacaoRA: formacaoRA === "sim",
+    modalidadeFormacaoRA: formData.get("modalidadeFormacaoRA"),
+    anoFormacaoRA: parseInt(formData.get("anoFormacaoRA")),
+    titulacoes: formData.getAll("titulacoes"),
+    membroEngravida: membroEngravida === "sim",
+    tempoEngravida: parseInt(formData.get("tempoEngravida")),
+    experienciaProfissional: formData.get("experienciaProfissional"),
+    curriculo: formData.get("curriculo") // Este campo pode precisar de tratamento especial para upload de arquivos
+  };
+
+  // Envio dos dados para o servidor
+  try {
+    const response = await fetch("http://localhost:5000/api/medicos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dadosMedico),
+    });
+
+    if (response.ok) {
+      const medicoCadastrado = await response.json();
+      alert("Médico cadastrado com sucesso! ID: " + medicoCadastrado.id);
+      formCadastroMedico.reset();
+      // Resetar a visibilidade dos detalhes condicionais
+      document.getElementById("detalhesFormacaoRA").style.display = "none";
+      document.getElementById("envioCurriculo").style.display = "none";
+      document.getElementById("detalhesMembroEngravida").style.display = "none";
+    } else {
+      throw new Error(`Erro na requisição: ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error("Falha no cadastro:", error);
+    alert("Ocorreu um erro durante o cadastro. Por favor, tente novamente.");
+  }
+});
+</script>
+</body>
+</html>
+ 

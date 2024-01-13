@@ -1,0 +1,1368 @@
+ <!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+<script>
+    const express = require('express');
+const app = express();
+const PORT = 3000;
+app.use(express.json());
+app.post('/api/medicos', (req, res) => {
+    const medicoData = req.body;
+    // Here you would typically validate the data and save it to the database
+    console.log(medicoData);
+    res.status(201).send({ message: 'Médico cadastrado com sucesso!' });
+});
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Médicos</title>
+ <style>
+    @import url('https://fonts.googleapis.com/css2?family=Mina:wght@400;700&display=swap');
+
+  :root {
+    --primary-dark-red: #820000;
+    --secondary-dark-red: #690000;
+    --accent-light-brown: #DB966C;
+    --accent-beige: #DBC194;
+    --accent-pale-pink: #FADED2;
+    --color-white: rgba(255, 255, 255, 0.75); /* Ajustado para transparência */
+    --color-black: #000000;
+    --font-family: 'Mina', sans-serif;
+    --radius: 5px;
+    --shadow-dark: rgba(150, 0, 0, 0.6);
+    --shadow-light: rgba(189, 139, 98, 0.45);
+    --blur: 65px;
+    --transition-speed: 0.6s; /* Adicionado para transições suaves */
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+  }
+
+  body {
+    background-image: 
+      radial-gradient(circle at 0% 20%, rgba(219, 193, 148, 0.8), #FADED2 100%),
+      radial-gradient(circle at 90% 50%, #FADED2, rgba(219, 193, 148, 0.6) 100%);
+    color: var(--color-white);
+    line-height: 1.6;
+    margin: 0;
+    padding: 2%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(28px);
+  }
+
+  ::-webkit-scrollbar {
+    display: none; /* Considere não ocultar as scrollbars para não afetar a acessibilidade */
+  }
+
+  @media (max-height: 600px) {
+    .formulario {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .menu .button {
+      width: 50%;
+      height: 6%;
+    }
+  }
+
+  h2 {
+    margin-bottom: 1rem;
+    padding: 3% 2%;
+    font-family: var(--font-family);
+    border: 4px solid rgba(240,220,205,0.6);
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    text-transform: uppercase;
+    background-image: radial-gradient(
+      circle at 40% 90%, 
+      rgba(105,0,0,0.6), 
+      rgba(255,255,255,0.3) 40%, 
+      var(--primary-dark-red) 100%
+    );
+    filter: drop-shadow(2px 2px 20px var(--primary-dark-red));
+    backdrop-filter: blur(80px);
+    font-weight: 600;
+    font-size: 2rem; /* Tamanho da fonte alterado para unidades relativas */
+    text-shadow: 0 1px 2px var(--primary-dark-red);
+    z-index: 9;
+  }
+
+  .form-section {
+    background: url('https://static.wixstatic.com/media/75d2e8_cfbb03ce61324dcd93f73ee2ae8526f6~mv2.jpg') center/cover, 
+                linear-gradient(175deg, var(--accent-beige), var(--accent-light-brown));
+    border-radius: var(--radius);
+    box-shadow: 3px 3px 5px var(--shadow-dark), -5px -5px 15px var(--shadow-light);
+    padding: 20px;
+    margin: 20px;
+    backdrop-filter: blur(var(--blur));
+    transition: backdrop-filter var(--transition-speed);
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--accent-pale-pink);
+    text-weight: 600px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="date"],
+  input[type="search"],
+  input[type="file"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 1rem;
+    margin: 3% 1%;
+    padding: 3% 2%;
+    background: rgba(255,255,255,0.8); /* For glass effect */
+    border: 2px groove transparent; /* Adjusted for a more glass-like border */
+    border-radius: var(--radius);
+    box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
+    backdrop-filter: blur(10px);
+    transition: box-shadow var(--transition-speed), transform var(--transition-speed); /* Smooth transitions for interactions */
+  }
+
+  .button-container {
+    display: flex;
+    flex-direction: wrap;
+    background-color: rgba(254,222,210,0.4);
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 30vh;
+    border: 2px ridge transparent;
+  }
+
+  input[type="submit"],
+  button,
+  .submit-button {
+    background: linear-gradient(145deg, #fff, #dbc194, #faded2);
+    border: 6px groove rgba(250,230,210,0.5);
+    color: #690000;
+    font-weight: 700;
+    font-size: 3.5vh;
+    text-align: center;
+    padding: 15px 15px;
+    margin: auto;
+    display: block;
+    width: 400px;
+    height: 65px;
+    border-radius: 0px;
+    text-align: center;
+    box-shadow: 1px 1px 2px #dbc194, -2px -2px 3px #dbc194;
+    transition: all 0.8s ease;
+  }
+
+  input[type="submit"]:hover,
+  button:hover,
+  .submit-button:hover {
+    background-image: radial-gradient(circle at 40% 90%, rgba(255, 255, 255, 0.6), rgba(250, 237, 210, 0.3) 100%);
+    box-shadow: 0 3px 5px #faded2;
+    color: #450000;
+    filter: drop-shadow(2px 2px 4px #FADED2);
+  }
+
+  /* Added styles for improved UX */
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus,
+  input[type="number"]:focus,
+  input[type="date"]:focus,
+  input[type="search"]:focus,
+  input[type="file"]:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-light-brown); /* Focus ring for better accessibility */
+  }
+
+  .search-bar {
+    position: relative;
+    margin-bottom: 1rem;
+    filter: drop-shadow(1px 1px 2px #450000);
+  }
+
+  .search-bar input[type="search"] {
+    width: 100%;
+    padding: 10px;
+    border: 3px groove #dbc194;
+    border-radius: var(--radius);
+    box-shadow: 3px 3px 8px var(--shadow-dark), -3px -3px 12px var(--shadow-light);
+  }
+
+  .search-bar i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent-light-brown);
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-white);
+    border-radius: var(--radius);
+    box-shadow: 3px 3px 8px var(--shadow-dark), -3px -3px 8px var(--shadow-light);
+    overflow: hidden; /* Hide overflow for rounded corners */
+  }
+
+  .table th,
+  .table td {
+    text-align: left;
+    padding: 10px;
+    border: 3px ridge transparent;
+    border-bottom: 1px solid var(--secondary-dark-red);
+  }
+
+  .table th {
+    background-color: var(--accent-beige);
+    color: var(--accent-light-brown);
+  }
+
+  .table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .pagination-nav {
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  .pagination {
+    list-style: none;
+    display: inline-flex;
+    padding: 0;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination a {
+    text-decoration: none;
+    color: var(--accent-beige);
+    padding: 5px 10px;
+    border-radius: var(--radius);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    text-weight: 500;
+  }
+
+  .pagination a:hover,
+  .pagination a:focus {
+    background-image: 
+      radial-gradient(circle at 10% 20%, rgba(219, 193, 148, 0.8), rgba(250, 237, 210, 0.5) 80%),
+      radial-gradient(circle at 90% 80%, rgba(250, 237, 210, 0.8), rgba(219, 193, 148, 0.3) 70%),
+      radial-gradient(circle at 50% 50%, rgba(219, 193, 148, 0.6), rgba(250, 237, 210, 0.6) 40%),
+      radial-gradient(circle at 30% 90%, rgba(219, 193, 148, 0.7), rgba(250, 237, 210, 0.3) 90%),
+      radial-gradient(circle at 70% 10%, rgba(250, 237, 210, 0.7), rgba(219, 193, 148, 0.5) 75%);
+    color: var(--primary-dark-red);
+  }
+
+  #dashboard-profile.active,
+  #avaliacao-trimestral.active {
+    display: block;
+  }
+
+  .perfil h4,
+  fieldset legend {
+    color: var(--accent-beige);
+    margin-bottom: 0.5rem;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 12px;
+    border: 2px groove var(--accent-beige);
+    border-radius: var(--radius);
+    background: var(--shadow-dark);
+    cursor: pointer;
+    outline: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 10px;
+    border-radius: 50%;
+    border: 20px ridge transparent;
+    background: var(--shadow-dark);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    padding: 20px;
+    margin: 20px;
+    border: 4px ridge transparent;
+    border-radius: 50%;
+    background: var(--secondary-dark-red);
+  }
+
+  .radio-group {
+    display: flex;
+    justify-content: space-between;
+    max-width: 300px;
+    margin: 10px;
+  }
+
+  .radio-group input[type="radio"] {
+    margin: 10px;
+    padding: 10px;
+    width: auto;
+  }
+
+  .radio-group label {
+    display: inline-block;
+    width: 20%;
+    text-align: center;
+    color: var(--accent-beige);
+    transition: color var(--transition-speed);
+  }
+
+  .radio-group input[type="radio"]:checked + label {
+    color: var(--primary-dark-red);
+  }
+
+  @media (max-width: 768px) {
+    .form-section,
+    .listagem-section,
+    #dashboard-profile,
+    #avaliacao-trimestral {
+      margin: 10px;
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 1.55rem;
+    }
+  }
+
+  container {
+    display: flex;
+    position: relative;
+    border: 2px groove transparent;
+    background: rgba(255,255,255,0.2);
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- Seção de Cadastro de Médicos -->
+  <section id="header" class="form-section">
+    <div id="section" style="display: block;">
+  <h2>Gestão do Corpo Clínico</h2>
+   <button onclick="toggleSection('section1')">Cadastro</button>
+   <div id="section1" style="display: none;">
+  <section id="cadastro-medico" class="form-section">
+    <form id="form-cadastro-medico">
+      <input type="text" id="nome" name="nome" placeholder="Nome completo" required>
+      <input type="text" id="identidadeGenero" name="identidadeGenero" placeholder="Identidade de Gênero" required>
+      <input type="date" id="dataNascimento" name="dataNascimento" placeholder="Data de Nascimento" required>
+      <input type="text" id="corRacaEtnia" name="corRacaEtnia" placeholder="Cor/Raça/Etnia" required>
+      <input type="email" id="email" name="email" placeholder="Email" required>
+        <label for="estado">Estado:</label>
+        <select id="estado" name="estado" required>
+        <option value="">Selecione o Estado</option>
+        <option value="AC">Acre</option>
+        <option value="AL">Alagoas</option>
+        <option value="AP">Amapá</option>
+        <option value="AM">Amazonas</option>
+        <option value="BA">Bahia</option>
+        <option value="CE">Ceará</option>
+        <option value="DF">Distrito Federal</option>
+        <option value="ES">Espírito Santo</option>
+        <option value="GO">Goiás</option>
+        <option value="MA">Maranhão</option>
+        <option value="MT">Mato Grosso</option>
+        <option value="MS">Mato Grosso do Sul</option>
+        <option value="MG">Minas Gerais</option>
+        <option value="PA">Pará</option>
+        <option value="PB">Paraíba</option>
+        <option value="PR">Paraná</option>
+        <option value="PE">Pernambuco</option>
+        <option value="PI">Piauí</option>
+        <option value="RJ">Rio de Janeiro</option>
+        <option value="RN">Rio Grande do Norte</option>
+        <option value="RS">Rio Grande do Sul</option>
+        <option value="RO">Rondônia</option>
+        <option value="RR">Roraima</option>
+        <option value="SC">Santa Catarina</option>
+        <option value="SP">São Paulo</option>
+        <option value="SE">Sergipe</option>
+        <option value="TO">Tocantins</option>
+      </select>
+      <input type="tel" id="telefone" name="telefone" placeholder="Telefone" required>
+      <input type="text" id="graduacao" name="graduacao" placeholder="Graduação - Instituição de Ensino" required>
+      <input type="text" id="residencia" name="residencia" placeholder="Residência Médica - Instituição Credenciada" required>
+      <input type="number" id="anoResidencia" name="anoResidencia" placeholder="Ano de Conclusão" required>
+
+      <!-- Alteração para pergunta de sim/não -->
+      <label for="formacaoRA">Possui formação em Reprodução Assistida?</label>
+      <input type="radio" id="formacaoRASim" name="formacaoRA" value="sim" required> Sim
+      <input type="radio" id="formacaoRANao" name="formacaoRA" value="nao"> Não
+
+      <!-- Conteúdo condicional baseado na seleção de formação em Reprodução Assistida -->
+      <div id="detalhesFormacaoRA" style="display: none;">
+        <select id="modalidadeFormacaoRA" name="modalidadeFormacaoRA" required>
+          <option value="">Modalidade da Formação</option>
+          <option value="residencia">Residência</option>
+          <option value="estagio">Estágio</option>
+          <option value="pos-graduacao">Pós-graduação</option>
+        </select>
+        <fieldset id="titulacoes">
+          <legend>Titulações</legend>
+          <label><input type="checkbox" name="titulacoes" value="especialista"> Título de Especialista</label>
+          <label><input type="checkbox" name="titulacoes" value="mestrado"> Mestrado</label>
+          <label><input type="checkbox" name="titulacoes" value="doutorado"> Doutorado</label>
+        </fieldset>
+        <input type="number" id="anoFormacaoRA" name="anoFormacaoRA" placeholder="Ano de início da atuação em RA" required>
+        <label for="membroEngravida">Você já faz parte da Engravida?</label>
+        <input type="radio" id="membroEngravidaSim" name="membroEngravida" value="sim"> Sim
+        <input type="radio" id="membroEngravidaNao" name="membroEngravida" value="nao" checked> Não
+        <div id="detalhesMembroEngravida" style="display: none;">
+          <input type="number" id="tempoEngravida" name="tempoEngravida" placeholder="Há quanto tempo (anos)?" min="0">
+        </div>
+        <textarea id="experienciaProfissional" name="experienciaProfissional" placeholder="Experiência Profissional" required></textarea>
+      </div>
+
+      <!-- Conteúdo condicional para caso não possua formação em Reprodução Assistida -->
+      <div id="envioCurriculo" style="display: none;">
+        <p>Por favor, envie seu currículo para avaliação.</p>
+        <input type="file" id="curriculo" name="curriculo" accept=".pdf,.doc,.docx" required>
+      </div>
+
+      <button type="submit" id="btnCadastrar">Cadastrar</button>
+    </form>
+  </section>
+  </div>
+  <button onclick="toggleSection('section2')">Busca</button>
+<div id="section2" style="display: none;">
+  <!-- Seção de Listagem de Médicos -->
+  <section id="listagem-medicos" class="listagem-section">
+    <h2>Busca por Médico</h2>
+    <div class="search-bar">
+      <label for="busca-medico">Busca médica:</label>
+      <input type="search" id="busca-medico" name="busca-medico" placeholder="Digite o nome ou parte" aria-label="Buscar médicos">
+      <button id="btn-buscar-medico" type="button">Buscar</button>
+    </div>
+    <div class="table-responsive">
+      <table id="tabela-medicos" class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Idade</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Nível</th>
+            <th>Estado</th>
+            <th>Ver Perfil</th>
+          </tr>
+        </thead>
+        <tbody id="corpo-tabela-medicos">
+          <!-- Os médicos serão inseridos aqui dinamicamente -->
+        </tbody>
+      </table>
+    </div>
+    <nav aria-label="Navegação de página" class="pagination-nav">
+      <ul id="pagination-container" class="pagination">
+        <!-- A paginação será inserida aqui dinamicamente -->
+      </ul>
+    </nav>
+  </section>
+</div>
+<button onclick="toggleSection('section3')">Seleção</button><br>
+<div id="section3" style="display: none;">
+  <section class="form-section">
+    <h2>Seleção Profissional</h2>
+
+    <!-- Experiência Prévia Relacionada -->
+    <div class="form-group">
+      <label for="experiencia-previa">Experiência Prévia Relacionada:</label>
+      <textarea id="experiencia-previa" name="experiencia_previa" rows="4" required
+        placeholder="Descreva experiências de trabalho anteriores relevantes para a área de reprodução assistida."></textarea>
+    </div>
+    <!-- Experiência em Reprodução Assistida -->
+    <div class="form-group">
+      <label for="experiencia-reproducao">Experiência em Reprodução Assistida:</label>
+      <select id="experiencia-reproducao" name="experiencia_reproducao" required>
+        <option value="">Selecione o nível de experiência</option>
+        <option value="iniciante">Iniciante (até 2 anos)</option>
+        <option value="intermediario">Intermediário (2 a 5 anos)</option>
+        <option value="avancado">Avançado (5 a 10 anos)</option>
+        <option value="especialista">Especialista (mais de 10 anos)</option>
+      </select>
+    </div>
+    <!-- Disponibilidade Semanal -->
+    <div class="form-group">
+      <label for="disponibilidade-semanal">Disponibilidade Semanal:</label>
+      <input type="text" id="disponibilidade-semanal" name="disponibilidade_semanal" required
+        placeholder="Ex: Seg à Sex, 9h às 18h">
+    </div>
+
+    <!-- Disponibilidade aos Sábados -->
+    <div class="form-group">
+      <label for="disponibilidade-sabados">Disponível aos Sábados?</label>
+      <select id="disponibilidade-sabados" name="disponibilidade_sabados" required>
+        <option value="">Escolha uma opção</option>
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+    </div>
+
+    <!-- Interesse em Atividades de Ensino e Pesquisa -->
+    <div class="form-group">
+      <label for="interesse-ensino-pesquisa">Interesse em Ensino e Pesquisa:</label>
+      <select id="interesse-ensino-pesquisa" name="interesse_ensino_pesquisa" required>
+        <option value="">Selecione uma opção</option>
+        <option value="altamente_interessado">Altamente Interessado</option>
+        <option value="moderadamente_interessado">Moderadamente Interessado</option>
+        <option value="pouco_interessado">Pouco Interessado</option>
+        <option value="nao_interessado">Não Interessado</option>
+      </select>
+    </div>
+
+  <!-- Caso de Gestação de Substituição - Avaliação de Postura Ética -->
+  <div class="form-group">
+    <label for="caso-gestacao-substituicao">Caso de Gestação de Substituição:</label>
+    <textarea id="caso-gestacao-substituicao" name="caso_gestacao_substituicao" rows="4" required placeholder="Apresente uma análise de caso envolvendo gestação de substituição, abordando os dilemas éticos e como lidar com eles."></textarea>
+    <label for="postura-etica">Avaliação da Postura Ética:</label>
+    <select id="postura-etica" name="postura_etica" required>
+      <option value="">Selecione a postura ética demonstrada na análise</option>
+      <option value="conservadora">Conservadora</option>
+      <option value="progressista">Progressista</option>
+      <option value="flexivel">Flexível</option>
+      <option value="intransigente">Intransigente</option>
+    </select>
+  </div>
+
+  <!-- Caso de Doação de Gametas entre Familiares - Avaliação da Comunicação -->
+  <div class="form-group">
+    <label for="caso-doacao-gametas">Caso de Doação de Gametas entre Familiares:</label>
+    <textarea id="caso-doacao-gametas" name="caso_doacao_gametas" rows="4" required placeholder="Discorra sobre um caso hipotético de doação de gametas entre familiares e os desafios éticos pertinentes."></textarea>
+    <label for="comunicacao-pacientes">Avaliação da Comunicação com Pacientes:</label>
+    <select id="comunicacao-pacientes" name="comunicacao_pacientes" required>
+      <option value="">Avalie a comunicação demonstrada na resposta</option>
+      <option value="clara">Clara e Direta</option>
+      <option value="empatica">Empática e Receptiva</option>
+      <option value="reservada">Reservada e Cautelosa</option>
+      <option value="tecnica">Técnica e Específica</option>
+    </select>
+  </div>
+
+  <!-- Caso de Descarte de Embriões - Avaliação de Capacidade de Decisão -->
+  <div class="form-group">
+    <label for="caso-descarte-embrioes">Caso de Descarte de Embriões:</label>
+    <textarea id="caso-descarte-embrioes" name="caso_descarte_embrioes" rows="4" required placeholder="Analise um cenário de descarte de embriões, explorando as considerações éticas e como orientar as partes envolvidas."></textarea>
+    <label for="capacidade-decisao">Avaliação da Capacidade de Decisão:</label>
+    <select id="capacidade-decisao" name="capacidade_decisao" required>
+      <option value="">Avalie a capacidade de decisão demonstrada na resposta</option>
+      <option value="alta">Alta - Tomada de decisão segura e bem fundamentada</option>
+      <option value="moderada">Moderada - Algumas hesitações, mas geralmente decisivo</option>
+      <option value="baixa">Baixa - Inseguro e frequentemente indeciso</option>
+      <option value="variavel">Variável - Dependente do contexto e pressão</option>
+    </select>
+  </div>
+
+      <button type="submit" class="submit-button">Concluir</button>
+    </section>
+    </div>
+    <button onclick="toggleSection('section4')">Perfil</button>
+<div id="section4" style="display: none;">
+    <section id="dashboard-profile">
+      <h2>Perfil do Profissional</h2>
+
+      <!-- Informações Pessoais -->
+      <div id="informacoes-pessoais">
+        <label for="nome">Nome:</label>
+        <div id="nome"><!-- Variável do nome --></div>
+
+        <label for="identidade-genero">Identidade de Gênero:</label>
+        <div id="identidade-genero"><!-- Variável da identidade de gênero --></div>
+
+        <label for="data-nascimento">Data de Nascimento:</label>
+        <div id="data-nascimento"><!-- Variável da data de nascimento --></div>
+
+        <label for="cor-raca-etnia">Cor/Raça/Etnia:</label>
+        <div id="cor-raca-etnia"><!-- Variável da cor/raça/etnia --></div>
+      </div>
+
+      <!-- Informações de Contato -->
+      <div id="informacoes-contato">
+        <label for="email">Email:</label>
+        <div id="email"><!-- Variável do email --></div>
+
+        <label for="telefone">Telefone:</label>
+        <div id="telefone"><!-- Variável do telefone --></div>
+      </div>
+
+      <!-- Informações Acadêmicas -->
+      <div id="informacoes-academicas">
+        <label for="graduacao">Graduação:</label>
+        <div id="graduacao"><!-- Variável da graduação --></div>
+
+        <label for="ano-graduacao">Ano de Graduação:</label>
+        <div id="ano-graduacao"><!-- Variável do ano de graduação --></div>
+
+        <label for="residencia">Residência:</label>
+        <div id="residencia"><!-- Variável da residência --></div>
+
+        <label for="ano-residencia">Ano de Conclusão da Residência:</label>
+        <div id="ano-residencia"><!-- Variável do ano de conclusão da residência --></div>
+
+        <label for="formacao-ra">Formação em Reprodução Assistida:</label>
+        <div id="formacao-ra"><!-- Variável da formação em reprodução assistida --></div>
+
+        <label for="modalidade-formacao-ra">Modalidade da Formação:</label>
+        <div id="modalidade-formacao-ra"><!-- Variável da modalidade da formação --></div>
+
+        <label for="ano-formacao-ra">Ano de Conclusão da Formação em RA:</label>
+        <div id="ano-formacao-ra"><!-- Variável do ano de conclusão da formação em RA --></div>
+      </div>
+
+      <!-- Métricas de Desempenho -->
+      <div id="metricas-desempenho">
+        <label for="taxaGravidez">Taxa de Gravidez:</label>
+        <div id="taxaGravidez"><!-- Variável da taxa de gravidez --></div>
+
+        <label for="taxaRecuperacaoM2">Taxa de Recuperação M2:</label>
+        <div id="taxaRecuperacaoM2"><!-- Variável da taxa de recuperação M2 --></div>
+      </div>
+
+      <!-- Tipos de Perfil e Competências -->
+      <div id="tipos-perfil">
+        <h3>Tipos de Perfil</h3>
+
+        <div class="perfil">
+          <h4>Comunicador</h4>
+          <p>Características: Comunicativo, carismático, entusiasmado, persuasivo, otimista.</p>
+          <input type="range" id="avaliacao-comunicador-slider" name="avaliacao_comunicador" min="1" max="5">
+          <div class="radio-group">
+            <input type="radio" id="comunicador-1" name="avaliacao_comunicador" value="1"><label for="comunicador-1">1</label>
+            <input type="radio" id="comunicador-2" name="avaliacao_comunicador" value="2"><label for="comunicador-2">2</label>
+            <input type="radio" id="comunicador-3" name="avaliacao_comunicador" value="3" checked><label for="comunicador-3">3</label>
+            <input type="radio" id="comunicador-4" name="avaliacao_comunicador" value="4"><label for="comunicador-4">4</label>
+            <input type="radio" id="comunicador-5" name="avaliacao_comunicador" value="5"><label for="comunicador-5">5</label>
+          </div>
+        </div>
+
+        <div class="perfil">
+          <h4>Executor</h4>
+          <p>Características: Autoconfiante, dominante, desafiador, competitivo, corajoso.</p>
+          <input type="range" id="avaliacao-executor-slider" name="avaliacao_executor" min="1" max="5">
+          <div class="radio-group">
+            <input type="radio" id="executor-1" name="avaliacao_executor" value="1"><label for="executor-1">1</label>
+            <input type="radio" id="executor-2" name="avaliacao_executor" value="2"><label for="executor-2">2</label>
+            <input type="radio" id="executor-3" name="avaliacao_executor" value="3" checked><label for="executor-3">3</label>
+            <input type="radio" id="executor-4" name="avaliacao_executor" value="4"><label for="executor-4">4</label>
+            <input type="radio" id="executor-5" name="avaliacao_executor" value="5"><label for="executor-5">5</label>
+          </div>
+        </div>
+
+        <div class="perfil">
+          <h4>Planejador</h4>
+          <p>Características: Estável, paciente, constante, conservador, organizado.</p>
+          <input type="range" id="avaliacao-planejador-slider" name="avaliacao_planejador" min="1" max="5">
+          <div class="radio-group">
+            <input type="radio" id="planejador-1" name="avaliacao_planejador" value="1"><label for="planejador-1">1</label>
+            <input type="radio" id="planejador-2" name="avaliacao_planejador" value="2"><label for="planejador-2">2</label>
+            <input type="radio" id="planejador-3" name="avaliacao_planejador" value="3" checked><label for="planejador-3">3</label>
+            <input type="radio" id="planejador-4" name="avaliacao_planejador" value="4"><label for="planejador-4">4</label>
+            <input type="radio" id="planejador-5" name="avaliacao_planejador" value="5"><label for="planejador-5">5</label>
+          </div>
+        </div>
+
+        <div class="perfil">
+          <h4>Analista</h4>
+          <p>Características: Detalhista, meticuloso, preciso, técnico, perfeccionista.</p>
+          <input type="range" id="avaliacao-analista-slider" name="avaliacao_analista" min="1" max="5">
+          <div class="radio-group">
+            <input type="radio" id="analista-1" name="avaliacao_analista" value="1"><label for="analista-1">1</label>
+            <input type="radio" id="analista-2" name="avaliacao_analista" value="2"><label for="analista-2">2</label>
+            <input type="radio" id="analista-3" name="avaliacao_analista" value="3" checked><label for="analista-3">3</label>
+            <input type="radio" id="analista-4" name="avaliacao_analista" value="4"><label for="analista-4">4</label>
+            <input type="radio" id="analista-5" name="avaliacao_analista" value="5"><label for="analista-5">5</label>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+    <button onclick="toggleSection('section5')">Avaliação</button>
+<div id="section5" style="display: none;">
+  <section id="avaliacao-trimestral">
+    <h2>Avaliação Trimestral de Desempenho</h2>
+    <form id="form-avaliacao-trimestral">
+      <!-- Competência Clínica -->
+      <fieldset>
+        <legend>Competência Clínica</legend>
+        <label for="sliderTaxaGravidez">Taxa de Gravidez (% sucesso):</label>
+        <input type="range" id="sliderTaxaGravidez" name="taxaGravidez" min="0" max="100" step="0.1" list="tickmarks" required>
+        <output for="sliderTaxaGravidez" id="outputTaxaGravidez">50%</output>
+
+        <label for="sliderTaxaRecuperacaoM2">Taxa de Recuperação de Oócitos M2 (%):</label>
+        <input type="range" id="sliderTaxaRecuperacaoM2" name="taxaRecuperacaoM2" min="0" max="100" step="0.1" list="tickmarks" required>
+        <output for="sliderTaxaRecuperacaoM2" id="outputTaxaRecuperacaoM2">50%</output>
+
+        <label for="sliderTaxaCancelamento">Taxa de Cancelamento (%):</label>
+        <input type="range" id="sliderTaxaCancelamento" name="taxaCancelamento" min="0" max="100" step="0.1" list="tickmarks" required>
+        <output for="sliderTaxaCancelamento" id="outputTaxaCancelamento">50%</output>
+      </fieldset>
+
+      <!-- Eficiência Operacional -->
+      <fieldset>
+        <legend>Eficiência Operacional</legend>
+        <label for="numeroInternacoesAno">Número de Internações no Ano:</label>
+        <input type="number" id="numeroInternacoesAno" name="numeroInternacoesAno" min="0" required>
+
+        <label for="numeroConsultasAntesPrimeiroUSG">Número de Consultas antes do Primeiro USG:</label>
+        <input type="number" id="numeroConsultasAntesPrimeiroUSG" name="numeroConsultasAntesPrimeiroUSG" min="0" required>
+
+        <label for="numeroUSGAntesCaptacaoOocitos">Número de USG antes da Captação de Oócitos:</label>
+        <input type="number" id="numeroUSGAntesCaptacaoOocitos" name="numeroUSGAntesCaptacaoOocitos" min="0" required>
+      </fieldset>
+
+      <!-- Satisfação do Paciente -->
+      <fieldset>
+        <legend>Satisfação do Paciente</legend>
+        <label for="sliderNpsPacientes">NPS dos Pacientes:</label>
+        <input type="range" id="sliderNpsPacientes" name="npsPacientes" min="0" max="10" list="tickmarksNPS" required>
+        <output for="sliderNpsPacientes" id="outputNpsPacientes">5</output>
+      </fieldset>
+
+      <!-- Gestão de Conflitos -->
+      <fieldset>
+        <legend>Gestão de Conflitos</legend>
+        <label for="escalacaoConflitos">Escalonamento de Conflitos (número de vezes):</label>
+        <input type="number" id="escalacaoConflitos" name="escalacaoConflitos" min="0" required>
+      </fieldset>
+
+      <!-- Feedback de Pares e da Equipe Multiprofissional -->
+      <fieldset>
+        <legend>Feedback de Pares e da Equipe Multiprofissional</legend>
+        <div>
+          <label for="softSkillSelecionada">Selecione a Soft Skill:</label>
+          <select id="softSkillSelecionada" name="softSkillSelecionada" required>
+            <option value="comunicacao">Comunicação</option>
+            <option value="trabalhoEmEquipe">Trabalho em Equipe</option>
+            <option value="lideranca">Liderança</option>
+            <option value="resolucaoProblemas">Resolução de Problemas</option>
+            <option value="criatividade">Criatividade</option>
+          </select>
+        </div>
+        <label for="feedbackPares">Feedback de Pares (média das notas):</label>
+        <input type="number" id="feedbackPares" name="feedbackPares" min="0" max="5" step="0.1" required>
+
+        <label for="feedbackEquipe">Feedback da Equipe Multiprofissional (média das notas):</label>
+        <input type="number" id="feedbackEquipe" name="feedbackEquipe" min="0" max="5" step="0.1" required>
+      </fieldset>
+
+      <!-- Botão de Submissão -->
+      <button type="submit">Concluir</button>
+    </form>
+  </section>
+
+  <datalist id="tickmarks">
+    <option value="0" label="0%">
+    <option value="10">
+    <option value="20">
+    <option value="30">
+    <option value="40">
+    <option value="50" label="50%">
+    <option value="60">
+    <option value="70">
+    <option value="80">
+    <option value="90">
+    <option value="100" label="100%">
+  </datalist>
+
+  <datalist id="tickmarksNPS">
+    <option value="0" label="0">
+    <option value="1">
+    <option value="2">
+    <option value="3">
+    <option value="4">
+    <option value="5" label="5">
+    <option value="6">
+    <option value="7">
+    <option value="8">
+    <option value="9">
+    <option value="10" label="10">
+  </datalist>
+</div>
+
+<button type="submit" onclick="window.location.href='https://www.engravidaexpertise.com.br/engramed'">Desempenho</button>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  const formCadastro = document.getElementById("form-cadastro-medico");
+  const detalhesFormacaoRA = document.getElementById("detalhesFormacaoRA");
+  const envioCurriculo = document.getElementById("envioCurriculo");
+  const radioFormacaoRA = document.querySelectorAll('input[name="formacaoRA"]');
+  const membroEngravidaRadios = document.querySelectorAll(
+    'input[name="membroEngravida"]',
+  );
+
+  // Evento para exibir/esconder detalhes da formação em reprodução assistida
+  radioFormacaoRA.forEach((radio) => {
+    radio.addEventListener("change", (e) =>
+      toggleDetalhesFormacao(e.target.value),
+    );
+  });
+
+  // Evento para exibir/esconder detalhes de membro Engravida
+  membroEngravidaRadios.forEach((radio) => {
+    radio.addEventListener("change", (e) =>
+      toggleDetalhesMembroEngravida(e.target.value),
+    );
+  });
+
+  formCadastro.addEventListener("submit", (event) =>
+    handleFormSubmit(event, formCadastro),
+  );
+
+  function toggleDetalhesFormacao(value) {
+    detalhesFormacaoRA.style.display = value === "sim" ? "block" : "none";
+    envioCurriculo.style.display = value === "nao" ? "block" : "none";
+  }
+
+  function toggleDetalhesMembroEngravida(value) {
+    document.getElementById("detalhesMembroEngravida").style.display =
+      value === "sim" ? "block" : "none";
+  }
+
+  async function handleFormSubmit(event, form) {
+    event.preventDefault();
+    const dadosMedico = new FormData(form);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/medicos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(Object.fromEntries(dadosMedico)),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro na requisição: ${response.statusText}`);
+      }
+
+      alert("Médico cadastrado com sucesso!");
+      form.reset();
+      toggleDetalhesFormacao("nao");
+      toggleDetalhesMembroEngravida("nao");
+    } catch (error) {
+      console.error("Falha no cadastro:", error);
+      alert("Ocorreu um erro durante o cadastro. Por favor, tente novamente.");
+    }
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const formCadastroMedico = document.getElementById("form-cadastro-medico");
+  const detalhesFormacaoRA = document.getElementById("detalhesFormacaoRA");
+  const envioCurriculo = document.getElementById("envioCurriculo");
+  const detalhesMembroEngravida = document.getElementById(
+    "detalhesMembroEngravida",
+  );
+
+  function toggleDetalhesFormacao(value) {
+    detalhesFormacaoRA.style.display = value === "sim" ? "block" : "none";
+    envioCurriculo.style.display = value === "nao" ? "block" : "none";
+  }
+
+  function toggleDetalhesMembroEngravida(value) {
+    detalhesMembroEngravida.style.display = value === "sim" ? "block" : "none";
+  }
+
+  formCadastroMedico.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const formacaoRA = formData.get("formacaoRA");
+    const membroEngravida = formData.get("membroEngravida");
+    toggleDetalhesFormacao(formacaoRA);
+    toggleDetalhesMembroEngravida(membroEngravida);
+
+    // Lógica de avaliação e construção do objeto com dados do médico aqui
+    const dadosMedico = {
+      nome: formData.get("nome"),
+      identidadeGenero: formData.get("identidadeGenero"),
+      dataNascimento: formData.get("dataNascimento"),
+      corRacaEtnia: formData.get("corRacaEtnia"),
+      email: formData.get("email"),
+      telefone: formData.get("telefone"),
+      graduacao: formData.get("graduacao"),
+      residencia: formData.get("residencia"),
+      anoResidencia: parseInt(formData.get("anoResidencia")),
+      formacaoRA: formacaoRA === "sim",
+      modalidadeFormacaoRA: formData.get("modalidadeFormacaoRA"),
+      anoFormacaoRA: parseInt(formData.get("anoFormacaoRA")),
+      titulacoes: formData.getAll("titulacoes"),
+      membroEngravida: membroEngravida === "sim",
+      tempoEngravida: parseInt(formData.get("tempoEngravida")),
+      experienciaProfissional: formData.get("experienciaProfissional"),
+    };
+
+    // Enviar dados do médico para o servidor
+    try {
+      const response = await fetch("http://localhost:5000/api/medicos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dadosMedico),
+      });
+
+      if (response.ok) {
+        alert("Cadastro realizado com sucesso!");
+        formCadastroMedico.reset();
+        toggleDetalhesFormacao("nao");
+        toggleDetalhesMembroEngravida("nao");
+      } else {
+        throw new Error(`Erro no servidor: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Erro no cadastro:", error);
+      alert("Ocorreu um erro no cadastro. Tente novamente.");
+    }
+  });
+
+  // Lógica para os campos de formação em reprodução assistida e membro Engravida
+  document.querySelectorAll('input[name="formacaoRA"]').forEach((radio) => {
+    radio.addEventListener("change", (e) =>
+      toggleDetalhesFormacao(e.target.value),
+    );
+  });
+
+  document
+    .querySelectorAll('input[name="membroEngravida"]')
+    .forEach((radio) => {
+      radio.addEventListener("change", (e) =>
+        toggleDetalhesMembroEngravida(e.target.value),
+      );
+    });
+});
+document.addEventListener("DOMContentLoaded", function () {
+  const buscaMedicoInput = document.getElementById("busca-medico");
+  const corpoTabelaMedicos = document.getElementById("corpo-tabela-medicos");
+  const paginationContainer = document.getElementById("pagination-container");
+
+  async function fetchMedicos(query = "") {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/medicos?search=${query}`,
+      );
+      if (response.ok) {
+        return await response.json();
+      } else {
+        throw new Error("Erro ao buscar dados dos médicos");
+      }
+    } catch (error) {
+      console.error("Falha ao buscar médicos:", error);
+    }
+  }
+
+  function generateTableRows(medicos) {
+    return medicos
+      .map(
+        (medico) => `
+      <tr>
+        <td>${medico.nome}</td>
+        <td>${medico.idade}</td>
+        <td>${medico.email}</td>
+        <td>${medico.telefone}</td>
+        <td>${medico.nivel}</td>
+        <td>${medico.estado}</td>
+        <td><button type="button" class="btn-ver-perfil" data-id-medico="${medico.id}">Ver Perfil</button></td>
+      </tr>
+    `,
+      )
+      .join("");
+  }
+
+  async function updateMedicosList(query = "") {
+    const medicos = await fetchMedicos(query);
+    if (medicos && medicos.length > 0) {
+      corpoTabelaMedicos.innerHTML = generateTableRows(medicos);
+    } else {
+      corpoTabelaMedicos.innerHTML =
+        '<tr><td colspan="7">Nenhum médico encontrado.</td></tr>';
+    }
+  }
+
+  buscaMedicoInput.addEventListener("keyup", function (e) {
+    if (e.key === "Enter") {
+      updateMedicosList(buscaMedicoInput.value.trim().toLowerCase());
+    }
+  });
+
+  function initializePagination(totalPages, currentPage) {
+    paginationContainer.innerHTML = Array.from(
+      { length: totalPages },
+      (_, i) => `
+      <li class="page-item ${i + 1 === currentPage ? "active" : ""}">
+        <a class="page-link" href="#" data-page="${i + 1}">${i + 1}</a>
+      </li>
+    `,
+    ).join("");
+
+    paginationContainer.querySelectorAll(".page-link").forEach((pageLink) => {
+      pageLink.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const page = parseInt(e.target.dataset.page);
+        // Aqui você pode buscar e atualizar a lista de médicos da nova página
+        const medicos = await fetchMedicos("&page=" + page); // Exemplo: adiciona parâmetro de paginação na requisição
+        corpoTabelaMedicos.innerHTML = generateTableRows(medicos);
+      });
+    });
+  }
+
+  // Inicialização
+  updateMedicosList();
+  // Simulação de uma chamada para buscar o total de páginas, substitua pela chamada real ao seu servidor
+  const totalPages = 5; // Deve ser substituído pelo total de páginas obtido do servidor
+  initializePagination(totalPages, 1);
+});
+function avaliarMedico(event) {
+  event.preventDefault();
+  const dadosAvaliacao = {
+    taxaGravidez: document.getElementById("taxaGravidez").value,
+    taxaRecuperacaoM2: document.getElementById("taxaRecuperacaoM2").value,
+    taxaCancelamento: document.getElementById("taxaCancelamento").value,
+    numeroInternacoesAno: document.getElementById("numeroInternacoesAno").value,
+    numeroConsultasAntesPrimeiroUSG: document.getElementById(
+      "numeroConsultasAntesPrimeiroUSG",
+    ).value,
+    numeroUSGAntesCaptacaoOocitos: document.getElementById(
+      "numeroUSGAntesCaptacaoOocitos",
+    ).value,
+    npsPacientes: document.getElementById("npsPacientes").value,
+    escalonamentoConflitos: document.getElementById("escalonamentoConflitos")
+      .value,
+    avaliacaoPares: document.getElementById("avaliacaoPares").value,
+    avaliacaoEquipeMultiprofissional: document.getElementById(
+      "avaliacaoEquipeMultiprofissional",
+    ).value,
+    envolvimentoOutrasAtividades: document.getElementById(
+      "envolvimentoOutrasAtividades",
+    ).value,
+    tempoEngravida: document.getElementById("tempoEngravida").value,
+    tempoRA: document.getElementById("tempoRA").value,
+    tituloMestradoDoutorado: document.getElementById("tituloMestradoDoutorado")
+      .value,
+  };
+
+  fetch("http://localhost:5000/api/avaliacoes", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dadosAvaliacao),
+  })
+    .then((response) => response.json())
+    .then(() => {
+      alert("Avaliação registrada com sucesso!");
+      document.getElementById("form-avaliacao-medico").reset();
+    });
+}
+
+function buscarMedico() {
+  const termoBusca = document
+    .getElementById("busca-medico")
+    .value.toLowerCase();
+  fetch(`http://localhost:5000/api/medicos?search=${termoBusca}`)
+    .then((response) => response.json())
+    .then((medicos) => {
+      const listaMedicosElement = document.getElementById("lista-medicos");
+      listaMedicosElement.innerHTML = medicos
+        .map(
+          (medico) => `
+            <div class="medico-card">
+                <h3>${medico.nome}</h3>
+                <p>${medico.graduacao}</p>
+                <p>${medico.anoGraduacao}</p>
+                <button onclick="exibirPerfil(${medico.id})">Ver Perfil</button>
+            </div>
+        `,
+        )
+        .join("");
+    });
+}
+document.addEventListener("DOMContentLoaded", function () {
+  const formAvaliacaoTrimestral = document.getElementById(
+    "form-avaliacao-trimestral",
+  );
+  const outputTaxaGravidez = document.getElementById("outputTaxaGravidez");
+  const sliderTaxaGravidez = document.getElementById("sliderTaxaGravidez");
+  const outputTaxaRecuperacaoM2 = document.getElementById(
+    "outputTaxaRecuperacaoM2",
+  );
+  const sliderTaxaRecuperacaoM2 = document.getElementById(
+    "sliderTaxaRecuperacaoM2",
+  );
+  const outputTaxaCancelamento = document.getElementById(
+    "outputTaxaCancelamento",
+  );
+  const sliderTaxaCancelamento = document.getElementById(
+    "sliderTaxaCancelamento",
+  );
+  const outputNpsPacientes = document.getElementById("outputNpsPacientes");
+  const sliderNpsPacientes = document.getElementById("sliderNpsPacientes");
+
+  // Atualização dos outputs conforme os sliders se movem
+  sliderTaxaGravidez.addEventListener("input", function () {
+    outputTaxaGravidez.value = `${sliderTaxaGravidez.value}%`;
+  });
+
+  sliderTaxaRecuperacaoM2.addEventListener("input", function () {
+    outputTaxaRecuperacaoM2.value = `${sliderTaxaRecuperacaoM2.value}%`;
+  });
+
+  sliderTaxaCancelamento.addEventListener("input", function () {
+    outputTaxaCancelamento.value = `${sliderTaxaCancelamento.value}%`;
+  });
+
+  sliderNpsPacientes.addEventListener("input", function () {
+    outputNpsPacientes.value = sliderNpsPacientes.value;
+  });
+
+  // Submissão do formulário de avaliação trimestral
+  formAvaliacaoTrimestral.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const dadosAvaliacao = {
+      taxaGravidez: sliderTaxaGravidez.value,
+      taxaRecuperacaoM2: sliderTaxaRecuperacaoM2.value,
+      taxaCancelamento: sliderTaxaCancelamento.value,
+      npsPacientes: sliderNpsPacientes.value,
+      // Adicione aqui os outros dados coletados pelo formulário
+    };
+
+    // Enviar os dados para o servidor
+    console.log("Dados da Avaliação Trimestral:", dadosAvaliacao);
+
+    // Aqui você pode substituir o console.log por uma função que faça o envio dos dados para o servidor
+  });
+
+  // Sincronização entre range e radio inputs para tipos de perfil
+  const perfis = ["comunicador", "executor", "planejador", "analista"];
+
+  perfis.forEach((perfil) => {
+    const slider = document.getElementById(`avaliacao-${perfil}-slider`);
+    const radios = document.querySelectorAll(`input[name=avaliacao_${perfil}]`);
+    slider.addEventListener("input", function () {
+      const value = slider.value;
+      radios.forEach((radio) => {
+        radio.checked = radio.value === value;
+      });
+    });
+    radios.forEach((radio) => {
+      radio.addEventListener("change", function () {
+        if (radio.checked) {
+          slider.value = radio.value;
+        }
+      });
+    });
+  });
+
+  // Função para carregar dados do perfil
+  async function carregarPerfil() {
+    // Aqui você faria uma chamada ao servidor para obter os dados do médico
+    // const response = await fetch('http://localhost:5000/api/medico/perfil');
+    // const perfil = await response.json();
+
+    // Simulação de dados recebidos
+    const perfil = {
+      nome: "Dra. Ana Silva",
+      identidadeGenero: "Feminino",
+      dataNascimento: "1980-04-15",
+      corRacaEtnia: "Branca",
+      email: "ana.silva@clinica.com",
+      telefone: "1122334455",
+      graduacao: "Medicina",
+      anoGraduacao: "2002",
+      residencia: "Ginecologia e Obstetrícia",
+      anoResidencia: "2005",
+      formacaoRA: "Especialização em Reprodução Assistida",
+      modalidadeFormacaoRA: "Presencial",
+      anoFormacaoRA: "2008",
+      taxaGravidez: "65",
+      taxaRecuperacaoM2: "80",
+    };
+
+    // Atualização da página com os dados do perfil
+    document.getElementById("nome").textContent = perfil.nome;
+    document.getElementById("identidade-genero").textContent =
+      perfil.identidadeGenero;
+    document.getElementById("data-nascimento").textContent =
+      perfil.dataNascimento;
+    document.getElementById("cor-raca-etnia").textContent = perfil.corRacaEtnia;
+    document.getElementById("email").textContent = perfil.email;
+    document.getElementById("telefone").textContent = perfil.telefone;
+    document.getElementById("graduacao").textContent = perfil.graduacao;
+    document.getElementById("ano-graduacao").textContent = perfil.anoGraduacao;
+    document.getElementById("residencia").textContent = perfil.residencia;
+    document.getElementById("ano-residencia").textContent =
+      perfil.anoResidencia;
+    document.getElementById("formacao-ra").textContent = perfil.formacaoRA;
+    document.getElementById("modalidade-formacao-ra").textContent =
+      perfil.modalidadeFormacaoRA;
+    document.getElementById("ano-formacao-ra").textContent =
+      perfil.anoFormacaoRA;
+    document.getElementById("taxaGravidez").textContent =
+      perfil.taxaGravidez + "%";
+    document.getElementById("taxaRecuperacaoM2").textContent =
+      perfil.taxaRecuperacaoM2 + "%";
+  }
+
+  // Chamada da função para carregar os dados do perfil
+  carregarPerfil();
+});
+function exibirPerfil(idMedico) {
+  fetch(`http://localhost:5000/api/medicos/${idMedico}`)
+    .then((response) => response.json())
+    .then((medico) => {
+      const dadosMedicoElement = document.getElementById("dados-medico");
+      dadosMedicoElement.innerHTML = `
+            <h3>${medico.nome}</h3>
+            <p>Graduação: ${medico.graduacao}</p>
+            <p>Ano de Graduação: ${medico.anoGraduacao}</p>
+            <p>Residência: ${medico.residencia}</p>
+            <p>Ano de Conclusão da Residência: ${medico.anoResidencia}</p>
+            <p>Formação em Reprodução Assistida: ${medico.formacaoRA}</p>
+            <p>Ano de Conclusão da Formação em RA: ${medico.anoFormacaoRA}</p>
+            <p>Experiência Profissional: ${medico.experienciaProfissional}</p>
+        `;
+    });
+}
+document.addEventListener("DOMContentLoaded", () => {
+  const menuLinks = document.querySelectorAll("#menu-navegacao a");
+
+  menuLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      // Prevent the default link behavior
+      event.preventDefault();
+
+      // Remove the "active" class from all sections
+      document.querySelectorAll("section").forEach((section) => {
+        section.classList.remove("active");
+      });
+
+      // Get the target section based on the href attribute of the clicked link
+      const targetId = link.getAttribute("href").substring(1);
+      const targetSection = document.getElementById(targetId);
+
+      // Add the "active" class to the target section
+      targetSection.classList.add("active");
+    });
+  });
+});
+document.addEventListener("DOMContentLoaded", () => {
+  carregarMedicos();
+  document
+    .getElementById("form-cadastro-medico")
+    .addEventListener("submit", cadastrarMedico);
+});
+
+function carregarMedicos() {
+  // Esta função deve obter dados dos médicos de uma fonte real, como uma API
+  // Substituí o código mock por uma chamada de função que precisa ser implementada
+  obterMedicos().then((medicos) => {
+    const tabelaMedicos = document.getElementById("tabela-medicos");
+    tabelaMedicos.innerHTML = ""; // Limpa a tabela antes de recarregar os dados
+    medicos.forEach((medico) => {
+      tabelaMedicos.appendChild(criarLinhaMedico(medico));
+    });
+  });
+}
+
+function calcularIdade(dataNascimento) {
+  const hoje = new Date();
+  const nascimento = new Date(dataNascimento);
+  let idade = hoje.getFullYear() - nascimento.getFullYear();
+  const m = hoje.getMonth() - nascimento.getMonth();
+  if (m < 0 || (m === 0 && hoje.getDate() < nascimento.getDate())) {
+    idade--;
+  }
+  return idade;
+}
+
+function criarLinhaMedico(medico) {
+  const linha = document.createElement("tr");
+  const idade = calcularIdade(medico.dataNascimento);
+  linha.innerHTML = `
+    <td>${medico.nome}</td>
+    <td>${idade}</td>
+    <td>${medico.email}</td>
+    <td>${medico.telefone}</td>
+    <td>Nível ${medico.nivel}</td>
+    <td>${medico.estado}</td>
+    <td><button onclick="verPerfilMedico(${medico.id})">Ver Perfil</button></td>
+  `;
+  return linha;
+}
+
+function verPerfilMedico(medicoId) {
+  // Implementar a lógica para mostrar o perfil do médico selecionado
+  alert(`Abrir perfil do médico com ID: ${medicoId}`);
+}
+
+async function obterMedicos() {
+  // Esta função deve ser implementada para obter os médicos de uma API ou fonte de dados
+  // A função está retornando uma Promise para simular uma chamada assíncrona
+  return new Promise((resolve) => {
+    // A chamada para a API real deve ser feita aqui
+    // Por ora, estamos resolvendo a Promise com um array vazio
+    resolve([]);
+  });
+}
+
+function cadastrarMedico(event) {
+  event.preventDefault();
+  // Implementar a lógica para cadastrar um novo médico
+}
+
+// Implemente as funções de edição e exclusão conforme necessário
+
+function toggleSection(sectionId) {
+  var section = document.getElementById(sectionId);
+  if (section.style.display === "none") {
+    section.style.display = "block";
+  } else {
+    section.style.display = "none";
+  }
+}
+  </script>
+
+</body>
+
+</html>

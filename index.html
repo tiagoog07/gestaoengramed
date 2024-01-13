@@ -1,795 +1,673 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Mina:wght@400;700&display=swap" rel="stylesheet">
-    <title>Cálculo de Honorários Médicos</title>
-   <style>
-        * Reseta os estilos padrão para consistência entre navegadores */ * {
-            font-family: 'Mina', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        /* Define a paleta de cores */
-        
-         :root {
-            --cream: #dbc194;
-            --tan: #bd955c;
-            --maroon: #690000;
-            --dark-maroon: #450000;
-            --faded-pink: #faded2;
-            --black: #000;
-            --transparent-white: rgba(255, 255, 255, 0.6);
-            --transparent-cream: rgba(254, 228, 210, 0.5);
-            --glass-effect-background: rgba(105, 0, 0, 0.8);
-            --gradient-background: linear-gradient( 175deg, rgba(105, 0, 0, 0.7), rgba(252, 220, 208, 0.3), rgba(189, 139, 92, 0.5));
-        }
-        /* Estilos base do documento */
-        
-        body {
-            font-family: 'Mina', sans-serif;
-            background-image: url('https://static.wixstatic.com/media/75d2e8_030e39b1104c4812bc984e214ff1f44d~mv2.jpg'), var(--gradient-background);
-            background-attachment: fixed;
-            /* Efeito Parallax */
-            background-size: cover;
-            color: #faded2;
-            line-height: 1.6;
-            backdrop-filter: blur(0px);
-            transition: background-color 0.8s ease;
-            /* Transição suave para mudanças de cor de fundo */
-        }
-        
-        header {
-            color: #FFFFFF;
-            padding: 10px;
-            text-align: center;
-            backdrop-filter: blur(80px);
-            box-shadow: 0 2px 2px var(--transparent-cream);
-            background: var(--gradient-background);
-            border: 3px groove #dbc194;
-        }
-        
-        main {
-            padding: 20px;
-        }
-        /* Efeito de vidro com transparência e sombra */
-        
-        form {
-            background: var(--glass-effect-background);
-            backdrop-filter: blur(100px);
-            padding: 30px;
-            margin: 30px;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px var(--black);
-            transition: transform 0.8s ease;
-            /* Transição suave para transformações */
-        }
-        
-        form div {
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-        }
-        
-        form label {
-            display: block;
-            margin-bottom: 5px;
-            color: var(--cream);
-        }
-        
-        form input[type='number'],
-        form input[type='text'],
-        form select,
-        form input[type='range'],
-        form input[type='checkbox'],
-        form button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 2px groove var(--black);
-            background: var(--faded-pink);
-            border-radius: 5px;
-            box-shadow: inset 0 1px 3px var(--dark-maroon);
-        }
-        /* Estilos para responsividade e transição */
-        
-        @media (max-width: 768px) {
-            header,
-            footer,
-            form,
-            section#resultadosCalculo {
-                padding: 10px;
-                box-shadow: none;
-            }
-            form {
-                background: rgba(105, 0, 0, 0.55);
-            }
-            body {
-                transition: background-color 0.5s ease;
-                /* Ajuste na transição para dispositivos móveis */
-            }
-        }
-        /* Estilização dos resultados e rodapé */
-        
-        section#resultadosCalculo,
-        footer {
-            background-color: var(--faded-pink);
-            padding: 30px;
-            border: 2px groove var(--transparent);
-            border-radius: 0px;
-            color: var(--dark-maroon);
-            margin-top: 20px;
-            text-align: center;
-            box-shadow: 0 4px 6px var(--transparent-white);
-            transition: background-color 0.3s ease;
-            font-family: 'Confortaa', sans-serif;
-        }
-        /* Efeito de iluminação e sombras para sliders e botões */
-        
-        form input[type='range'] {
-            cursor: pointer;
-            background: var( --gradient-background);
-            /* Gradiente tridimensional para o track do slider */
-        }
-        
-        form input[type='range']::-webkit-slider-thumb {
-            background: var(--tan);
-            /* Sombras e iluminação */
-            box-shadow: 0 0 5px var(--cream);
-        }
-        
-        form button {
-            cursor: pointer;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-                       border: 3px groove transparent;
-  color: #820000;
-  font-weight: 600;
-  font-size: 16px;
-  display: block;
-  border-radius: 0px;
-  conteot-align: center;
-  box-shadow: 4px 5px 1px #dbc194, -3px -5px 6px #faded2;
-  transition: all 0.8s ease;
-        }
-        
-        form button:hover {
-          background: linear-gradient(145deg, #dbc194, #faded2);
-  box-shadow: 1px 4px 10px #fff;
-  nackdrop-filter: blur(40px);
-  text-shadow: 0.5px 0.5px 0px #bd955c;
-  color: #fff;
-}
-        /* Estilos gerais para os controles deslizantes */
-        
-        .slider-container {
-            margin-bottom: 20px;
-        }
-        
-        .slider-container input[type='range'] {
-            -webkit-appearance: none;
-            width: 100%;
-            margin: 10px;
-        }
-        /* Estilos para a trilha do controle deslizante */
-        
-        .slider-container input[type='range']::-webkit-slider-runnable-track {
-            width: 100%;
-            height: 8px;
-            background: linear-gradient(to right, #faded2, #dbc194);
-            border-radius: 4px;
-            border: none;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-        }
-        
-        .slider-container input[type='range']::-moz-range-track {
-            width: 100%;
-            height: 8px;
-            background: linear-gradient(to right, #faded2, #dbc194);
-            border-radius: 4px;
-            border: none;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-        }
-        
-        .slider-container input[type='range']::-ms-track {
-            width: 100%;
-            height: 8px;
-            background: transparent;
-            border-color: transparent;
-            color: transparent;
-        }
-        
-        .slider-container input[type='range']::-ms-fill-lower {
-            background: #faded2;
-        }
-        
-        .slider-container input[type='range']::-ms-fill-upper {
-            background: #dbc194;
-        }
-        /* Estilos para o polegar do controle deslizante */
-        
-        .slider-container input[type='range']::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 24px;
-            width: 24px;
-            border-radius: 50%;
-            background: #820000;
-            cursor: pointer;
-            margin-top: -8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-            transition: background 0.3s ease-in-out;
-        }
-        
-        .slider-container input[type='range']::-moz-range-thumb {
-            height: 24px;
-            width: 24px;
-            border-radius: 50%;
-            background: #820000;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-        }
-        
-        .slider-container input[type='range']::-ms-thumb {
-            height: 24px;
-            width: 24px;
-            border-radius: 50%;
-            background: #820000;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-        }
-        /* Aumentar a área clicável do polegar do controle deslizante */
-        
-        .slider-container input[type='range']::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 36px;
-            width: 36px;
-            margin-top: -14px;
-        }
-        /* Estilização do foco para remover o contorno padrão e adicionar um efeito personalizado */
-        
-        .slider-container input[type='range']:focus {
-            outline: none;
-        }
-        
-        .slider-container input[type='range']:focus::-webkit-slider-runnable-track {
-            background: linear-gradient(to right, #faded2, #dbc194);
-        }
-        
-        .slider-container input[type='range']:focus::-moz-range-track {
-            background: linear-gradient(to right, #faded2, #dbc194);
-        }
-        
-        .slider-container input[type='range']:focus::-ms-fill-lower {
-            background: #faded2;
-        }
-        
-        .slider-container input[type='range']:focus::-ms-fill-upper {
-            background: #dbc194;
-        }
-        /* Atualiza o valor do slider dinamicamente com JavaScript */
-        
-        .slider-container input[type='range'] {
-            oninput: 'taxaConversaoValor.innerHTML=this.value + "%"';
-        }
-        
-        .slider-container input[type='range'] {
-            oninput: 'taxaComparecimentoValor.innerHTML=this.value + "%"';
-        }
-        
-        .modal {
-            display: none;
-            /* Hidden by default */
-            position: fixed;
-            /* Stay in place */
-            z-index: 2;
-            /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%;
-            /* Full width */
-            height: 100%;
-            /* Full height */
-            overflow: auto;
-            /* Enable scroll if needed */
-            background-color: rgba(0, 0, 0, 0.4);
-            /* Black w/ opacity */
-        }
-        
-        .modal-content {
-            background: linear-gradient(135deg, #690000 0%, #bd955c 100%);
-            margin: 15%;
-            /* 15% from the top and centered */
-            padding: 20px;
-            border: 2px solid #faded2;
-            width: 40%;
-            /* Could be more or less, depending on screen size */
-            border-radius: 10px;
-            /* Optional: for rounded corners */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            color: white;
-            /* Text color */
-        }
-        
-        .close {
-            color: #ccc;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        
-        .close:hover,
-        .close:focus {
-            color: #fff;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        /* Estilos para os inputs e botões do modal */
-        
-        .modal input[type=number],
-        .modal button {
-            width: 100%;
-            padding: 10px;
-            margin: 15px;
-            /* Espaçamento entre os campos */
-            border: none;
-            border-radius: 5px;
-            /* Bordas arredondadas */
-        }
-        
-        .modal button {
-            background-color: #820000;
-            /* Cor de fundo dos botões */
-            color: white;
-            cursor: pointer;
-            /* Muda o cursor para indicar que é clicável */
-            transition: background-color 0.3s;
-            /* Transição suave para hover */
-        }
-        
-        .modal button:hover {
-            background-color: #bd955c;
-            /* Cor de fundo do botão no hover */
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
-
-<body>
     <header>
-        <h1>Indicadores Globais para Variáveis de Desempenho</h1>
-    </header>
-    <main>
-        <form id="formCalculoHonorarios">
-            <div>
-                <label for="nivelMedico">Nível do Médico: <a href="#" id="calcularNivelMedicoLink">Calcular Nível</a></label>
-                <select id="nivelMedico" required>
-                  <option value="">Selecione...</option>
-                  <option value="1">Nível 1</option>
-                  <option value="2">Nível 2</option>
-                  <option value="3">Nível 3</option>
-                  <option value="4">Nível 4</option>
-                </select>
-            </div>
-            <div>
-                <label for="numeroCasosConquistados">Número de Tratamentos Executados:</label>
-                <input type="number" id="numeroCasosConquistados" min="0" required/>
-            </div>
-            <div>
-                <label for="horasDisponibilizadas">Horas Disponibilizadas (hh:mm):</label>
-                <input type="text" id="horasDisponibilizadas" pattern="\d{1,3}:[0-5]\d" required placeholder="HH:MM" value="00:00" />
-            </div>
-            <div>
-                <label for="horasEspeciais">Horas Especiais (hh:mm):</label>
-                <input type="text" id="horasEspeciais" pattern="\d{1,3}:[0-5]\d" placeholder="HH:MM" value="00:00" />
-            </div>
-            <div>
-                <label for="horasEducacionais">Horas Educacionais (hh:mm):</label>
-                <input type="text" id="horasEducacionais" pattern="\d{1,3}:[0-5]\d" placeholder="HH:MM" value="00:00" />
-            </div>
-            <div class="slider-container">
-                <label for="sliderTaxaConversao">Taxa de Conversão (%):</label>
-                <input type="range" id="sliderTaxaConversao" min="0" max="100" value="60" step="0.25" />
-                <span id="taxaConversaoValor">60%</span>
-            </div>
-            <div class="slider-container">
-                <label for="sliderTaxaComparecimento">Taxa de Comparecimento (%):</label>
-                <input type="range" id="sliderTaxaComparecimento" min="0" max="100" value="60" step="0.25" />
-                <span id="taxaComparecimentoValor">60%</span>
-            </div>
-            <div>
-                <label>Gestão:</label>
-                <div>
-                    <input type="checkbox" id="responsavelLocal" name="responsavelLocal" />
-                    <label for="responsavelLocal">Referência Local</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="responsavelRegional" name="responsavelRegional" />
-                    <label for="responsavelRegional">Supervisão Regional</label>
-                </div>
-            </div>
-            <div>
-                <button type="submit">Calcular</button>
-            </div>
-        </form>
+  <img src="https://static.wixstatic.com/media/75d2e8_2de49c86c70f444eb1d7d0ae61a996e2~mv2.png" alt="Logo" style="display:block; width:80%; margin: auto; padding: 0; opacity: 1; border: ridge 6px #000; border-top:none;"></src>
+  <h1>ALGORITMO DE DECISÕES EM REPRODUÇÃO ASSISTIDA</h1>
+</header>
+    <style>
+        body {
+            font-family: 'Josefin Sans', sans-serif;
+background: rgb(71,34,27);
+background: linear-gradient(225deg, rgba(71,34,27,1) 0%, rgba(105,0,0,0.9780287114845938) 63%, rgba(189,149,92,0.8) 100%);
+  box-shadow: 0 0 20px rgba(255,255,255,0.6);
+            color: #FFF;
+            opacity: 1;
+            transition: all 1.2s ease;
+            border: ridge 6px #bd955c;
+            margin: 6%;
+        }
 
-        <div id="modalCalculadora" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Calculadora de Nível Médico</h2>
-                <div>
-                    <label for="tempoAtuacao">Tempo de Atuação em RA (anos):</label>
-                    <input type="number" id="tempoAtuacao" step="0.1" required>
-                </div>
-                <div>
-                    <label for="tempoAdmissao">Tempo de Admissão na Engravida (anos):</label>
-                    <input type="number" id="tempoAdmissao" step="0.1" required>
-                </div>
-                <div>
-                    <label for="titulos">Quantidade de Títulos (Mestrado/Doutorado):</label>
-                    <input type="number" id="titulos" min="0" required>
-                </div>
-                <div>
-                    <button type="button" id="calcularNivel">Calcular Nível</button>
-                </div>
-            </div>
-        </div>
+        #container {
+  background: radial-gradient(ellipse at center, #dbc194, #820000);
+  backdrop-filter:blur(60px);
+  box-shadow: inset 1px 1px 20px rgba(0,0,0, 0.8);
+            border-radius: 25px;
+            margin: 5%;
+            padding: 12% 12%;
+            max-width: 980px;
+            border: 6px groove #bd955c;
+            transition: 1.2 ease;
+        }
 
-        <section id="resultadosCalculo">
-            <h2>Resultados</h2>
-            <div id="graficoResultados">
-                <canvas id="myChart"></canvas>
-            </div>
-            <p id="salarioTotal">Salário Total: R$0,00</p>
-            <p id="valorPorHora">Valor por Hora: R$0,00</p>
-            <p id="valorPorCaso">Valor por Tratamento: R$0,00</p>
-            <p id="btAtual">BT Atual: 0</p>
-            <p id="btIdeal">BT Ideal: 0</p>
-            <p id="sugestao">Sugestão: Nenhuma</p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2023 - Engravida - Clínica de Reprodução Humana</p>
-    </footer>
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var modal = document.getElementById('modalCalculadora');
-    var btn = document.getElementById('calcularNivelMedicoLink');
-    var span = document.getElementsByClassName('close')[0];
-    var calcularNivelBtn = document.getElementById('calcularNivel');
-    var nivelMedicoSelect = document.getElementById('nivelMedico');
+        h1 {
+            text-shadow: 1px 1px 1px #450000;
+            font-weight: 700;
+            letter-spacing: 4%;
+            color: #FFFFFF;
+            opacity: 1;
+            text-align: center;
+            z-index: 1;
+            padding: 5%;
+            margin: 5%;
+          font-size: 24px;
 
-    // Função para calcular o nível médico
-    function calcularNivelMedico() {
-        var tempoAtuacao = parseFloat(document.getElementById('tempoAtuacao').value) || 0;
-        var tempoAdmissao = parseFloat(document.getElementById('tempoAdmissao').value) || 0;
-        var titulos = parseInt(document.getElementById('titulos').value, 10) || 0;
-        var pontuacao = tempoAtuacao + tempoAdmissao * 0.4 + titulos * 0.2;
+        }
 
-        return pontuacao > 10 ? '4' :
-               pontuacao > 7 ? '3' :
-               pontuacao > 4 ? '2' : '1';
+        h2 {
+            font-size: 24px;
+            font-weight: 400;
+            display: inline-block;
+            text-align: center;
+            padding-top: 3%;
+            margin-top: 3%;
+            border-radius: 0px;
+            color: #dbc194;
+            background-color: transparent;
+            backdrop-filter: blur(30px);
+            opacity: 1;
+            text-align: center;
+            text-decoration-line: overline;
+            z-index: 3;
+            transition: 1.8s ease;
+        }
+
+        h2:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 1);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 500;
+            padding: 2%;
+            color: #fffFFF;
+            opacity: 0.9;
+        
+             background: rgba(45, 0, 0, 0.2);
+             -webkit: backdrop-filter: blur(50px);
+            z-index: 3;
+        }
+
+        h5 {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 3% 3%;
+            padding: 3px 25px 3px 2px;
+            color: transparent;
+            opacity: 0.5;
+            text-align: center;
+            border-top: 4px groove #fff;
+            box-sizing: border-box;
+            z-index: -1;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: 500;
+            background: rgba (105,0,0, 0.7);
+            color: #faded2;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            margin: 3% 2%;
+            display: block;
+        }
+
+        label2 {
+            font-size: 16px;
+            font-weight: 600;
+            z-index: 5;
+            padding: 5%;
+            color: #bdc194;
+            margin: 4% 4%;
+            display: block;
+        }
+        label3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #dbc194;
+            border: groove 1px #fffFFF;
+            margin: 3% 2% 2% 2%;
+            padding: 5% 5%;
+            box-shadow: inset 0px 1px 10px rgba(105,0,0,0.6);
+            background-image: rbga(105,0,0,0.4);
+            backdrop-filter:blur(40px);
+            display: block;
+            z-index: 5;
+        }
+         label4 {
+            font-size: 14px;
+            font-weight: 500;
+            background: rgba (255,255,255, 0.4);
+            color: #dbc194;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            display:flex;
+            position: relative;
+        }
+
+        .linha-vermelha {
+        padding: 3% 3%;
+        margin: 2% 2%;
+            border: 2px groove #690000;
+            background: rgba(105,0,0,0.6);
+             box-shadow: inset 1px 1px 10px #faded2;
+            
+        }
+
+        .linha-amarela {
+               padding: 3% 3%;
+        margin: 2% 2%;
+            border: 4px groove #dbc194;
+            background-color: linear-gradient(135deg, #fff, #bd955c);
+             -webkit backdrop-filter: blur(50px);
+             box-shadow: inset 1px 1px 15px #dbc194;
+        }
+         .linha-branca {
+            padding: 3% 3%;
+        margin: 2% 2%;
+            border: 4px groove #FFF;
+            background-color: linear-gradient(135deg, #fff, #faded2);
+            backdrop-filter: blur(80px);
+             box-shadow: inset 1px 1px 15px #faded2;
+        }
+
+            button {
+            background: linear-gradient(to right, rgb(250,220,210,0.5), rgb(189,149,92,0.6));
+            backdrop-filter:blur(45px);
+            color: #690000;
+            border: 2px ridge #dbc194;
+            border-radius: 20%;
+            padding: 3% 5%;
+            text-align: center;
+            right: 50%;
+            text-decoration: none;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            font-weight: 600;
+            margin: 2% 1%;
+            cursor: pointer;
+            box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            transition: all 0.8s ease;
+            z-index: 5;
+        }
+
+        button:hover {
+            color: #FFFFFF;
+            background: linear-gradient(to right, rgb(250,220,210,0.8), rgb(189,149,92,0.8));
+            border: 2px ridge #dbc194;
+            box-shadow: inset 0px 0px 8px rgb(255,255,255,0.7);
+        }
+
+        form {
+            background-color: rgb(105,0,0, 0.4);
+            padding: 4%;
+            margin: 4%;
+            font-size: 12px;
+            border-radius: 25px;
+            border: 4px groove #FADED2;
+            box-shadow: inset 1px 1px 18px rgb(105, 0, 0, 0.3);
+        }
+
+        input {
+            padding: 2% 4%;
+            margin: 2%;
+            box-sizing: border-box;
+            font-size: 12px;
+            border: 2px ridge #FADED2;
+            border-radius: 10px;
+            background: rgb(189, 149, 128, 0.2);
+            backdrop-filter: blur(8px);
+            color: rgba(248, 228, 208, 0.9);
+            transition: 1.4s ease;
+        }
+
+          input:hover {
+            box-shadow: inset 2px 2px 20px rgba(255, 255, 255, 0.4);
+            background: rgba(189, 149, 128, 0.4);
+        }
+
+       span {
+       position: relative;
+       font-size: 16px;
+      background: rgba(255, 255, 255, 0.3);
+      padding: 2% 6% 1% 4%;
+      margin: 2% 2% 8% 2%;
+      max-width: 30%;
+  color: #690000;
+  backdrop-filter: blur(65px);
+  z-index: 10;
+  border: groove 3px #FFFFFF;
+}
+
+        span:hover {
+            color: #FFFFFF;
+            background: rgba(105,0,0,0.3);
+            backdrop-filter: blur(85px);
+            box-shadow: 1px 1px 4px 0px rgba(255, 255, 255, 0.45);
+        }
+        
+            option {
+            font-size: 12px;
+            display: flex;
+            justify-content: column;
+            text-align: flex;
+            padding: 4%px 8%;
+            margin: 3% 1%;
+            box-sizing: inline-block;
+            max-width: 25%;
+            color: #450000;
+            backdrop-filter: blur(55px);
+            border: 3px groove #FFF;
+            background: #dbc194;
+            box-shadow: 2px 2px 7px rgba(255, 255, 255, 0.6);
+            z-index: 9;
+            transition: all 1.6s ease;
+        }
+        
+        #result {
+            display: none;
+            color: #690000;
+            opacity: 0.8;
+            font-size: 16px;
+            text-shadow: 1px 1px 2px #dbc194;
+            background: linear-gradient(to right, #d6ae7b, #eacda3); 
+            padding: 6%;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        #result.alert {
+            color: #dbc194;
+            background-color: rgba(105, 0, 0, 0.4);
+            font-size: 16px;
+            margin: 2%;
+        }
+       
+input[type="checkbox"] {
+  -webkit-appearance: none; /* Remove a aparência padrão do navegador */
+  -moz-appearance: none;
+  appearance: none;
+  z-index: 5;
+  width: 3%; /* Largura do checkbox */
+  height: 3%; /* Altura do checkbox */
+  border: 3px groove #dbc194; /* Cor e estilo da borda */
+  border-radius: 50%; /* Borda arredondada */
+  outline: none; /* Remove o contorno padrão */
+  transition: all 0.3s; /* Adiciona transição suave */
+  background-color: transparent; /* Cor de fundo quando desmarcado */
+  box-shadow: 2px 1px 10px rgba(105,0,0,0.5), inset 2px 1px 10px rgb(105,0,0,0.6);
+  color: rgba(219,167,133,0.7); /* Cor do texto */
+  cursor: pointer; /* Define o cursor como um ponteiro */
+}
+input[type="checkbox"]:hover {
+background-color: rgba(249, 224, 298, 0.1);
+}
+/* Alteração no visual do checkbox quando marcado */
+input[type="checkbox"]:checked {
+  background-color: linear-gradient(126deg, rgba(189, 1149, 98, 0.9) 34%, rgba(213, 166, 139, 0.8) 100%); /* Cor de fundo quando marcado */
+  border-color: #fff; /* Cor da borda quando marcado */
+  color: #FFF; /* Cor do texto quando marcado */
+  &::before {
+    content: "\2713"; /* Ícone de check */
+    font-size: 20px; /* Tamanho do ícone */
+    color: #fff; /* Cor do ícone */
+    text-shadow: 1px 1px 3px rgba(255,255,255,0.1);
+    position: absolute; /* Posição absoluta */
+    top: 50%; /* Posição vertical */
+    left: 50%; /* Posição horizontal */
+    transform: translate(-50%, -50%);  
+  }
+}
+   .like-button {
+      display: inline-block;
+      padding: 4% 8%;
+      margin: 8% 4%;
+      border: none;
+      border-radius: 5px;
+      background: linear-gradient(to right, #450000, #690000);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s, filter 0.5s;
+    }
+    
+    .like-button:hover {
+      filter: brightness(110%);
     }
 
-    // Evento para abrir o modal
-    btn.addEventListener('click', function(event) {
-        event.preventDefault();
-        modal.style.display = 'block';
-    });
+    .like-button:active,
+    .like-button.clicked {
+      box-shadow: 1px 1px 15px rgb(255,255,255,0.4);
+       filter: brightness(110%);
+    }
 
-    // Evento para fechar o modal pelo botão 'x'
-    span.addEventListener('click', function() {
-        modal.style.display = 'none';
-    });
+    .like-icon {
+      margin-right: 5px;
+      }
+    </style>
+<body>
+<div id="container">
+<h2>Estimulação Ovariana na Alta Complexidade</h2>
+<h3>I. Identificação do caso</h3>
+<label for="fullName">Nome:</label>
+<input id="fullName" oninput="calculateAgeAndID()" required="" type="text">
+<label for="dob">Data de Nascimento:</label>
+<input id="dob" onchange="calculateAgeAndID()" required="" type="date">
+<h5>--------------------</h5>
+<span>ID:<span id="ageDisplay"></span><span id="date"></span></span>
+<h3>II. Critérios Obrigatórios:</h3>
+<input id="exams" name="requirements" type="checkbox" value="Exames">
+<label3 for="exams">Resultados adequados de exames de acordo com a RDC 771 de 2022 da ANVISA.</label3>
+<input id="usg" name="requirements" type="checkbox" value="Ultrassonografia">
+<label3 for="usg">Primeira ultrassonografia até o 3º dia do ciclo menstrual.</label3>
+<input id="availability" name="requirements" type="checkbox" value="Disponibilidade">
+<label3 for="availability">Disponibilidade para exames e procedimentos nas próximas duas semanas em datas variáveis.</label3>
+<button onclick="checkRequirements()">Verificar Critérios</button>
+<div id="estimulopreviostory" style="display:none;"> 
+  <h3>III. Estimulação Ovariana prévia:</h3>
+  <label for="gonadotropinDose">Dose diária de gonadotrofina:</label>
+  <input id="gonadotropinDose" type="number">
+  <label for="previousFollicleCount">Contagem de folículos antrais:</label>
+  <input id="previousFollicleCount" type="number">
+  <label for="previousOvuleCount">Número de oócitos M2:</label>
+  <input id="previousOvuleCount" type="number">
+  <label for="previousBlastocystCount">Número de blastocistos:</label>
+  <input id="previousBlastocystCount" type="number">
+<button onclick="mostrarPrimeiraUSG()" style="display:block">Realizar USG</button>
+<div id="primeirausg" style="display:none;">
+  <label for="primeirausg"><h3>IV. Primeira Ultrassonografia</h3></label>
+  <form id="formulario">
+  <label2 for="contagem">Contagem de Folículos Antrais (5-10mm):</label2>
+  <input id="contagem" name="contagem" required="" type="number">
+  <div id="secaoFoliculoMaior" style="display:none;">
+  <label2 for="foliculoMaior">Algum folículo maior que 10mm?</label2>
+  <select id="foliculoMaior" required="">
+  <option disabled="" selected="" value="">Selecione uma opção</option>
+  <option value="sim">Sim</option>
+  <option value="nao">Não</option>
+  </select>
+  </div>
+  <div id="secaoEstradiol" style="display:none;">
+  <label2 for="estradiol">Dosagem de Estradiol:</label2>
+  <input id="estradiol" name="estradiol" type="number">
+  </div>
+  <div id="secaoIdade" style="display:none;">
+  <label2 for="idade">Idade:</label2>
+  <input id="ageOnly">
+  </div>
+  <div id="secaoQuestionario" style="display:none;">
+  <label2 for="questionario">Contagem folicular anterior compatível, FSH &gt; 10 ou AMH &lt; 1, nos últimos 12 meses?</label>
+  <select id="questionario" required="">
+  <option disabled="" selected="" value="">Selecione uma opção</option>
+  <option value="sim">Sim</option>
+  <option value="nao">Não</option>
+  </select>
+  </div>
+  </form>
+  <div id="resultado"></div>
+</form>
+<button onclick="definicaoTrigger()" style="display:none">Controle folicular</button>
+<div id="definicaoTrigger" style="display:block">
+  <h3>V. Definição do Trigger</h3>
+<button onclick="addFollicle()">Adicionar Folículo</button>
+<form id="form">
+</form>
+<button onclick="calculateTrigger()">Propor ação:</button>
+<div id="result" style="display: block; background-color: rgba(255, 255, 255, 0.8); backdrop-filter: contrast(110%);"></div></conteiner>
+   <button class="like-button" onclick="changeButtonState()">
+    <i class="like-icon fas fa-thumbs-up"></i> Concorda com a conduta?
+  </button>
+  <h3 for="observa">Observações:</h3>
+  <input id="observa" name="observa" type="text">
+  <button onclick="sendFeedback()">ENVIAR FEEDBACK</button>
+  <h5>--------------------</h5>
+<script>
+const dateSpan = document.getElementById("date");
+const currentYear = (new Date()).getFullYear();
+dateSpan.textContent = currentYear;
+function extractInitials(fullName) {
+    return fullName
+        .split(" ")
+        .map((n) => n[0])
+        .join("");
+}
+function calculateAgeAndID() {
+    const dob = new Date(document.getElementById("dob").value);
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear(); // Altere 'const' para 'let'
+    const fullName = document.getElementById("fullName").value;
+    const initials = extractInitials(fullName);
 
-    // Evento para fechar o modal clicando fora dele
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
+    const monthDifference = today.getMonth() - dob.getMonth();
+    if (monthDifference < 0 ||
+        (monthDifference === 0 && today.getDate() < dob.getDate())) {
+        age--;
+    }
 
-    // Evento para calcular o nível, atualizar o dropdown e fechar o modal
-    calcularNivelBtn.addEventListener('click', function() {
-        var nivel = calcularNivelMedico();
-        nivelMedicoSelect.value = nivel;
-        modal.style.display = 'none';
-    });
-});
-    Chart.register(
-        Chart.BarController,
-        Chart.LinearScale,
-        Chart.CategoryScale,
-        Chart.BarElement,
-        Chart.Title,
-        Chart.Tooltip,
-        Chart.Legend
+    const caseID = `${initials}-${age}`; // Mova esta linha para depois do cálculo da idade
+    document.getElementById("ageDisplay").innerText = caseID;
+    document.getElementById("ageOnly").value = age;
+}
+function checkRequirements() {
+    const checkboxes = document.querySelectorAll(
+        'input[type="checkbox"]:checked'
     );
-
-    function converterTempoParaHoras(tempo) {
-        const padrao = /^\d{1,3}:\d{2}$/;
-        if (!padrao.test(tempo)) {
-            throw new Error(
-                'Formato de tempo inválido. O tempo deve estar no formato HH:MM ou HHH:MM.'
-            );
-        }
-        const [horas, minutos] = tempo.split(':').map(Number);
-        return horas + minutos / 60;
-    }
-
-    function atualizarValorSlider(idDoSlider, idDoValor) {
-        const slider = document.getElementById(idDoSlider);
-        const output = document.getElementById(idDoValor);
-        slider.oninput = function() {
-            output.textContent = this.value + '%';
-        };
-        output.textContent = slider.value + '%';
-    }
-
-    function inicializarSliders() {
-        atualizarValorSlider('sliderTaxaConversao', 'taxaConversaoValor');
-        atualizarValorSlider('sliderTaxaComparecimento', 'taxaComparecimentoValor');
-    }
-
-    document.addEventListener('DOMContentLoaded', inicializarSliders);
-
-    function obterDadosFormulario() {
-        return {
-            nivelMedico: parseInt(document.getElementById('nivelMedico').value, 10),
-            horasDisponibilizadas: converterTempoParaHoras(document.getElementById('horasDisponibilizadas').value),
-            horasEspeciais: converterTempoParaHoras(document.getElementById('horasEspeciais').value),
-            horasEducacionais: converterTempoParaHoras(document.getElementById('horasEducacionais').value),
-            taxaConversao: parseFloat(document.getElementById('sliderTaxaConversao').value) / 100,
-            taxaComparecimento: parseFloat(document.getElementById('sliderTaxaComparecimento').value) / 100,
-            numeroTratamentos: parseInt(document.getElementById('numeroCasosConquistados').value, 10),
-            responsavelLocal: document.getElementById('responsavelLocal').checked,
-            responsavelRegional: document.getElementById('responsavelRegional').checked,
-        };
-    }
-
-    function calcularBTAtual(dados) {
-        const btIdeal = 0.2 * 0.6 * 0.6;
-        const casosPorHora = dados.numeroTratamentos / dados.horasDisponibilizadas;
-        const btAtual = dados.taxaConversao * dados.taxaComparecimento * casosPorHora;
-
-        let sugestao = '';
-        if (btAtual < btIdeal) {
-            if (dados.taxaConversao < 0.6) {
-                sugestao += 'Implementação de um Programa de Desenvolvimento Profissional: Pode-se criar um programa focado em habilidades interpessoais como a empatia e a comunicação eficiente, para melhorar a capacidade dos profissionais de engajar os pacientes e aumentar a taxa de conversão de consultas em tratamentos. Avaliar alinhamento com o Protocolo Institucional e a solicitação de exames ou encaminhamento que adiem ou desmotivem o tratamento.';
-            }
-            if (dados.taxaComparecimento < 0.6) {
-               sugestao += 'Iniciativa de Engajamento do Paciente: Pode-se desenvolver um sistema de acompanhamento personalizado que incentive o comparecimento, como lembretes de consultas e follow-ups pós-consulta para reforçar o compromisso dos pacientes com o tratamento e o acolhimento em todas as etapas. Avaliar fatores socioeconômicos externos e distância dos agendamentos por superlotação das agendas.';
-            }
-            if (casosPorHora < 0.2) {
-               sugestao += 'Reestruturação da Agenda Clínica: A agenda pode ser reestruturada para melhorar a eficiência operacional, reduzindo o tempo de espera entre as consultas e otimizando a utilização dos recursos disponíveis, como mais horários disponíveis para consultas de primeira avaliação ou mais médicos atuando em dias com maior taxa de comparecimento.';
-            }
+    const estimulopreviostoryDiv = document.getElementById(
+        "estimulopreviostory"
+    );
+    if (checkboxes.length < 3) {
+        const isOncologyCase = confirm("Terapia Gonadotóxica iminente?");
+        if (isOncologyCase) {
+            estimulopreviostoryDiv.style.display = "block";
         } else {
-            sugestao = 'O BT atual está adequado ou acima do ideal. ';
-            if (dados.taxaConversao > 0.6) {
-               sugestao += 'Auditorias de Qualidade e Satisfação do Paciente: a realização de auditorias pode ajudar a manter a qualidade do atendimento, garantindo que a alta taxa de conversão não comprometa a qualidade dos serviços prestados, nem represente a indicação de intervenções desnecessárias.'
-            }
-            if (casosPorHora > 0.2) {
-               sugestao += 'Revisar o fluxo de trabalho para manter a qualidade dos tratamentos sem sobrecarregar a equipe.'';
-            }
+            alert("O tratamento não pode ser iniciado.");
+        }
+    } else {
+        estimulopreviostoryDiv.style.display = "block";
+    }
+}
+function mostrarPrimeiraUSG() {
+    var div = document.getElementById("primeirausg");
+    div.style.display = "block";
+}
+document.addEventListener("DOMContentLoaded", function () {
+    const formulario = document.getElementById("formulario");
+    const secaoFoliculoMaior = document.getElementById("secaoFoliculoMaior");
+    const secaoEstradiol = document.getElementById("secaoEstradiol");
+    const secaoIdade = document.getElementById("secaoIdade");
+    const secaoQuestionario = document.getElementById("secaoQuestionario");
+    const resultado = document.getElementById("resultado");
+
+    formulario.addEventListener("submit", function (event) {
+        event.preventDefault();
+    });
+
+    function atualizarResultado() {
+        const estradiol = parseInt(document.getElementById("estradiol").value);
+        const idade = parseInt(document.getElementById("ageOnly").value);
+
+        if (idade === 0) {
+            resultado.innerHTML = "Por favor, preencha a data de nascimento.";
+            secaoQuestionario.style.display = "none";
+            return;
         }
 
-        return {
-            btAtual: btAtual,
-            btIdeal: btIdeal,
-            sugestao: sugestao
-        };
-    }
-
-    // Função para calcular os honorários com base nos dados fornecidos e no BT atual
-    function calcularHonorarios(dados, dadosBT) {
-        const valoresHoraPlantao = [120, 140, 170, 200];
-        const valoresHoraProdutividade = [60, 70, 85, 100];
-        const bonusPorTratamento = 300;
-        const salarioBaseLocalRegional = 2500;
-
-        const nivelIndex = dados.nivelMedico - 1;
-        const valorHoraPlantao = valoresHoraPlantao[nivelIndex];
-        const valorHoraProdutividade = valoresHoraProdutividade[nivelIndex];
-        const salarioHoraPlantao = valorHoraPlantao * dados.horasDisponibilizadas;
-        const salarioHoraProdutividade = valorHoraProdutividade * dados.horasEspeciais;
-        const bonusTratamento = bonusPorTratamento * dados.numeroTratamentos;
-        const salarioEducacional = valorHoraProdutividade * dados.horasEducacionais;
-
-        let salarioTotal = salarioHoraPlantao + salarioHoraProdutividade + bonusTratamento + salarioEducacional;
-
-        if (dados.responsavelLocal) salarioTotal += salarioBaseLocalRegional;
-        if (dados.responsavelRegional) salarioTotal += salarioBaseLocalRegional;
-
-        return {
-            salarioTotal: salarioTotal,
-            salarioPorHora: salarioTotal / (dados.horasDisponibilizadas + dados.horasEspeciais + dados.horasEducacionais),
-            salarioPorTratamento: salarioTotal / dados.numeroTratamentos,
-            BTAtual: dadosBT.btAtual,
-            BTIdeal: dadosBT.btIdeal,
-            sugestao: dadosBT.sugestao
-        };
-    }
-
-    // Função para atualizar a interface com os resultados do cálculo
-    function atualizarInterface(resultados) {
-        document.getElementById('salarioTotal').textContent = `Salário Total: R$${resultados.salarioTotal.toFixed(2)}`;
-        document.getElementById('valorPorHora').textContent = `Valor por Hora: R$${resultados.salarioPorHora.toFixed(2)}`;
-        document.getElementById('valorPorCaso').textContent = `Valor por Tratamento: R$${resultados.salarioPorTratamento.toFixed(2)}`;
-        document.getElementById('btAtual').textContent = `BT Atual: ${resultados.BTAtual.toFixed(4)}`;
-        document.getElementById('btIdeal').textContent = `BT Ideal: ${resultados.BTIdeal.toFixed(4)}`;
-        document.getElementById('sugestao').textContent = resultados.sugestao;
-    }
-
-    // Função para criar ou atualizar o gráfico com os resultados do cálculo
-    function atualizarGrafico(resultados) {
-        const ctx = document.getElementById('myChart').getContext('2d');
-        // Destrua o gráfico existente se ele já existir
-        if (window.graficoResultados instanceof Chart) {
-            window.graficoResultados.destroy();
+        if (estradiol > 80) {
+            resultado.innerHTML =
+                "O tratamento não deve ser iniciado. Adiar um ciclo e utilizar estradiol nos 7 dias que precedem a próxima menstruação.";
+            resultado.className = "linha-amarela";
+            resultado.style.display = "block";
+            secaoQuestionario.style.display = "none";
+        } else {
+            if (idade > 37) {
+                resultado.innerHTML = "Seguir o protocolo padrão:Inibidor de aromatase e modulador estrogênico (2º dia); - 225U de gonadotrofina (3º dia); - Progestágeno (Desogestrel 150mg a partir do 5º dia); e - 50U de hCG (6º dia).";
+                resultado.className = "linha-branca";
+                resultado.style.display = "block";
+                secaoQuestionario.style.display = "none";
+            } else {
+                resultado.innerHTML = "";
+                secaoQuestionario.style.display = "block";
+            }
         }
-        window.graficoResultados = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Salário Total', 'Por Hora', 'Por Tratamento'],
-                datasets: [{
-                    label: 'Valor (R$)',
-                    data: [resultados.salarioTotal, resultados.salarioPorHora, resultados.salarioPorTratamento],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)'
-                    ],
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    }
-                }
+    }
+
+    document.getElementById("contagem").addEventListener("input", function () {
+        const contagem = parseInt(this.value);
+        const gonadotropinDose = parseInt(document.getElementById("gonadotropinDose").value);
+        const previousOvuleCount = parseInt(document.getElementById("previousOvuleCount").value);
+
+        if (contagem === 0 || contagem === 1) {
+            resultado.innerHTML =
+                "É prudente não iniciar o tratamento e avaliar de outras formas a reserva ovariana, além de iniciar uma reflexão sobre recepção de oócitos doados.";
+            resultado.className = "linha-amarela";
+            resultado.style.display = "block";
+            secaoFoliculoMaior.style.display = "none";
+        } else if (contagem >= 24) {
+            resultado.innerHTML =
+                "ATENÇÃO! Risco de Síndrome de Hiperestímulo Ovariano Grave: não utilize hCG, inicie Metformina 850mg via oral duas vezes ao dia. Considere o protocolo com 150U de gonadotrofina.";
+            resultado.className = "linha-vermelha";
+            resultado.style.display = "block";
+            secaoFoliculoMaior.style.display = "none";
+        } else if (contagem >= 18 && contagem <= 23) {
+            resultado.innerHTML =
+                "Atenção para o risco de Síndrome de Hiperestimulo Ovariano. Não utilize hCG e inicie metformina 850mg via oral duas vezes ao dia.";
+            resultado.className = "linha-amarela";
+            resultado.style.display = "block";
+            secaoFoliculoMaior.style.display = "none";
+        } else if (contagem > 5 && contagem < 18 && gonadotropinDose <= 300 && previousOvuleCount <= 5) {
+            resultado.innerHTML =
+                " Nesse caso, é possível obter resultados melhores com uma dose diária de 300U da gonadotrofina. Mantenha o restante da prescrição:  - Inibidor de aromatase e modulador estrogênico (2º dia); - Progestágeno (Desogestrel 150mg a partir do 5º dia); e - 50U de hcG (6º dia).";
+            resultado.className = "linha-amarela";
+            resultado.style.display = "block";
+            secaoFoliculoMaior.style.display = "none";
+        } else if (contagem >= 6 && contagem <= 17) {
+            resultado.innerHTML =
+                "Iniciar o protocolo padrão: - Inibidor de aromatase e modulador estrogênico (2º dia); - 225U de gonadotrofina (3º dia); -Progestágeno (Desogestrel 150mg a partir do 5º dia); e - 50U de hcG (6º dia).";
+            resultado.className = "linha-branca";
+            resultado.style.display = "block";
+            secaoFoliculoMaior.style.display = "none";
+        } else if (contagem <= 5) {
+            resultado.innerHTML = "";
+            resultado.className = "";
+            secaoFoliculoMaior.style.display = "block";
+        }
+    });
+
+    document
+        .getElementById("foliculoMaior")
+        .addEventListener("change", function () {
+            if (this.value === "sim") {
+                secaoEstradiol.style.display = "block";
+                secaoIdade.style.display = "block";
+            } else {
+                secaoEstradiol.style.display = "none";
+                secaoIdade.style.display = "block";
+                resultado.innerHTML = "";
+                secaoQuestionario.style.display = "block";
             }
         });
+<script type="module">
+  // Importações do Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js";
+
+  // Configuração do Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCE5P4QSafVHbPcrCR_W9p3qT_wryceR_M",
+    authDomain: "algoritmofiv.firebaseapp.com",
+    projectId: "algoritmofiv",
+    storageBucket: "algoritmofiv.appspot.com",
+    messagingSenderId: "991266348218",
+    appId: "1:991266348218:web:ce976a95659b12f157b683",
+    measurementId: "G-LQ1FYEW1ZN"
+  };
+
+  // Inicialização do Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+
+  // Função para exibir o elemento relacionado à definição do trigger
+  function definicaoTrigger() {
+    let definicaoTriggerElement = document.getElementById("definicaoTrigger");
+    definicaoTriggerElement.style.display = "block";
+  }
+
+  // Função para adicionar folículos
+  function addFollicle() {
+    const form = document.getElementById("form");
+    const input = document.createElement("input");
+    input.type = "number";
+    input.className = "follicle";
+    input.placeholder = "Diâmetro do folículo (mm)";
+    input.addEventListener("input", function () {
+      if (this.value === "0") {
+        this.remove();
+      }
+      if (!Number.isInteger(parseFloat(this.value))) {
+        this.value = Math.round(this.value);
+      }
+    });
+    form.appendChild(input);
+    input.focus();
+  }
+
+  // Função para calcular o trigger
+  function calculateTrigger() {
+    document.getElementById("result").style.display = "block";
+    let follicles = Array.from(document.getElementsByClassName("follicle"))
+                         .map(el => parseFloat(el.value))
+                         .filter(val => val >= 10 && val <= 99); // Filtra valores fora do intervalo esperado
+
+    let maxExpectedM2 = 0;
+    let optimalTriggerDay = null;
+    let clinicalGuidance = "";
+
+    follicles.forEach(follicle => {
+      if (follicle >= 17 && follicle <= 24) {
+        maxExpectedM2++;
+      }
+    });
+
+    // Lógica para definir o optimalTriggerDay (exemplo com lógica simplificada)
+    if (maxExpectedM2 >= 2) {
+      optimalTriggerDay = /* Lógica para determinar o dia ótimo para o trigger */;
+      clinicalGuidance += 'Condições atendidas. O "trigger" pode ser agendado em ' + optimalTriggerDay + ' dias. Número de oócitos M2 esperados: ' + maxExpectedM2 + '.';
+    } else {
+      clinicalGuidance += "Condições não atendidas. Nova ultrassonografia deve ser agendada.";
     }
-function calcularHonorarios(dados) {
-    const valoresHoraDisponibilizada = [120, 140, 160, 180];
-    const valoresHoraAdicionalConsulta = [60, 70, 80, 90];
-    const salarioBaseLocalRegional = 2500;
-    const bonusPorTratamento = 300;
-    const receitaPorTratamento = 12600;
-    const receitaPorConsulta = 250;
-    const minutosConsulta = 30;
 
-    const nivelIndex = dados.nivelMedico - 1;
-    const valorHoraDisponibilizada = valoresHoraDisponibilizada[nivelIndex];
-    const valorHoraAdicionalConsulta = valoresHoraAdicionalConsulta[nivelIndex];
-
-    const proporcaoConsultas = 125 / (125 + 165);
-    const horasConsultas = dados.horasDisponibilizadas * proporcaoConsultas;
-    const totalConsultas = horasConsultas * (60 / minutosConsulta);
-    const consultasEfetivas = totalConsultas * dados.taxaComparecimento;
-    const horasOcupadas = consultasEfetivas * (minutosConsulta / 60);
-
-    const salarioDisponibilizadas = valorHoraDisponibilizada * dados.horasDisponibilizadas;
-    const adicionalHorasConsultas = valorHoraAdicionalConsulta * horasOcupadas;
-    const bonusTotalTratamento = bonusPorTratamento * dados.numeroTratamentos;
-
-    let salarioTotal = salarioDisponibilizadas + adicionalHorasConsultas + bonusTotalTratamento;
-
-    if (dados.responsavelLocal) salarioTotal += salarioBaseLocalRegional;
-    if (dados.responsavelRegional) salarioTotal += salarioBaseLocalRegional * 2;
-
-    const faturamentoTratamentos = receitaPorTratamento * dados.numeroTratamentos;
-    const faturamentoConsultas = receitaPorConsulta * consultasEfetivas;
-    const faturamentoTotal = faturamentoTratamentos + faturamentoConsultas;
-
-    const percentualSalarioFaturamento = (salarioTotal / faturamentoTotal) * 100;
-
-    return {
-        salarioTotal,
-        salarioPorHora: salarioTotal / dados.horasDisponibilizadas,
-        salarioPorTratamento: salarioTotal / dados.numeroTratamentos,
-        faturamentoTotal,
-        percentualSalarioFaturamento
-    };
-}
-
-// Função para atualizar textos da interface com os resultados
-function atualizarInterface(resultados) {
-    document.getElementById('salarioTotal').textContent = `Salário Total: R$${resultados.salarioTotal.toFixed(2)}`;
-    document.getElementById('valorPorHora').textContent = `Valor por Hora: R$${resultados.salarioPorHora.toFixed(2)}`;
-    document.getElementById('valorPorCaso').textContent = `Valor por Tratamento: R$${resultados.salarioPorTratamento.toFixed(2)}`;
-}
-
-// Função para atualizar o gráfico com os resultados
-function atualizarGrafico(resultados) {
-    const ctx = document.getElementById('myChart').getContext('2d');
-    if (window.graficoResultados instanceof Chart) {
-        window.graficoResultados.destroy();
+    if (follicles.length > 18) {
+      clinicalGuidance += " Atenção para o risco de Síndrome de Hiperestímulo Ovariano. Faça Stepdown e não utilize hCG.";
+      document.getElementById("result").style.backgroundColor = "rgba(255, 0, 0, 0.6)";
+    } else {
+      document.getElementById("result").style.backgroundColor = "rgba(255, 255, 255, 0.6)";
     }
-    window.graficoResultados = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Salário Total', 'Por Hora', 'Por Tratamento'],
-            datasets: [{
-                label: 'Valor (R$)',
-                data: [resultados.salarioTotal, resultados.salarioPorHora, resultados.salarioPorTratamento],
-                backgroundColor: [
-                    'rgba(105, 0, 0, 0.3)',
-                    'rgba(189, 132, 98, 0.3)',
-                    'rgba(255, 230, 210, 0.3)'
-                ],
-                borderColor: [
-                    'rgba(105, 0, 0, 0.8)',
-                    'rgba(189, 132, 98, 0.8)',
-                    'rgba(255, 230, 210, 0.8)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
+
+    document.getElementById("result").innerText = clinicalGuidance;
+  }
+
+  // Função para mudar o estado do botão
+  function changeButtonState() {
+    var button = document.querySelector('.like-button');
+    button.classList.add('clicked');
+    setTimeout(function() {
+      button.classList.remove('clicked');
+    }, 10000);
+  }
+
+  // Adicionando eventos após o carregamento do DOM
+  window.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('addFollicleButton').addEventListener('click', addFollicle);
+    document.getElementById('calculateTriggerButton').addEventListener('click', calculateTrigger);
+  });
+   
+
+    function autoFillAge() {
+  const dob = document.getElementById("dateOfBirth").value; // ID do campo de data de nascimento na Etapa 1
+  const ageField = document.getElementById("age"); // ID do campo de idade na Etapa 2
+  const age = calculateAge(dob);
+  ageField.value = age;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById("modalCalculadora");
-    const btn = document.getElementById("calcularNivelMedicoLink");
-    const span = document.getElementsByClassName("close")[0];
-    const calcularNivelBtn = document.getElementById("calcularNivel");
-    const nivelMedicoSelect = document.getElementById("nivelMedico");
-    const formCalculoHonorarios = document.getElementById("formCalculoHonorarios");
-
-    // Previne a submissão do formulário
-    formCalculoHonorarios.addEventListener('submit', function(event) {
-        event.preventDefault();
-        // Aqui você pode chamar a função para calcular os honorários
-    });
-
-    // Evento para abrir o modal
-    btn.addEventListener('click', function(event) {
-        event.preventDefault(); // Impede que o link recarregue a página
-        modal.style.display = "block";
-    });
-
-    // Evento para fechar o modal pelo botão 'x'
-    span.addEventListener('click', function() {
-        modal.style.display = "none";
-    });
-
-    // Evento para fechar o modal clicando fora dele
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
-    });
-
-    // Evento para calcular o nível e atualizar o dropdown
-    calcularNivelBtn.addEventListener('click', function() {
-        const tempoAtuacao = parseFloat(document.getElementById('tempoAtuacao').value) || 0;
-        const tempoAdmissao = parseFloat(document.getElementById('tempoAdmissao').value) || 0;
-        const titulos = parseInt(document.getElementById('titulos').value, 10) || 0;
-        const pontuacao = tempoAtuacao + tempoAdmissao * 0.4 + titulos * 0.2;
-        const nivel = pontuacao > 10 ? '4' : pontuacao > 7 ? '3' : pontuacao > 4 ? '2' : '1';
-
-        nivelMedicoSelect.value = nivel;
-        modal.style.display = "none";
-    });
-});
 </script>
-   </body>
-      </html>
+</body>
+</html>
